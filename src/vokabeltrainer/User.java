@@ -9,13 +9,12 @@ package vokabeltrainer;
  *
  * @author Lena
  */
-public class Vokabeltrainer {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        
-    }
+public class User {
+    private String uname;
+    private String kennwort;
     
+    public User(String pName, String pKennwort){
+        pName = uname;
+        pKennwort = kennwort;
+    }
 }
