@@ -12,6 +12,10 @@ package vokabeltrainer;
 public class Kurs {
     private String kName;
     
+    public static void main(String[] args) {
+        System.out.println("Kurs");
+    }
+    
     public Kurs (String pName){
         pName = kName;
     }

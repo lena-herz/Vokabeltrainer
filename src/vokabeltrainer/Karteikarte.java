@@ -10,20 +10,34 @@ package vokabeltrainer;
  * @author Lena
  */
 public class Karteikarte {
-    private static String vokA;
-    private static String vokZ;
-    private static String hilfssatz;
-    private static boolean gelernt;
-    private static int status;
-    private static boolean favorit;
+    private String vokA;
+    private String vokZ;
+    private String hilfssatz;
+    private boolean gelernt;
+    private int status;
+    private boolean favorit;
     
-    public Karteikarte(String pVokA, String pVokZ){
-        pVokA = vokA;
-        pVokZ = vokZ;
+    public static void main(String[] args) {
+        //System.out.println("Karteikarte");
     }
     
-    public static String getVokA(){
+    public Karteikarte(String pVokA, String pVokZ){
+        vokA = pVokA;
+        vokZ = pVokZ;
+    }
+    
+    public String getVokA(){
         return vokA;
+    }
+    
+    public String getVokZ(){
+        return vokZ;
+    }
+    
+    public void setHilfssatz(){
+        System.out.println("Wie soll der Hilfssatz lauten?");
+        String satz = SystemInReader.readString();
+        hilfssatz = satz;
     }
     
 }

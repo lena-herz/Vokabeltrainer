@@ -13,6 +13,10 @@ public class User {
     private String uname;
     private String kennwort;
     
+    public static void main(String[] args) {
+        System.out.println("User");
+    }
+    
     public User(String pName, String pKennwort){
         pName = uname;
         pKennwort = kennwort;

@@ -1,4 +1,4 @@
-package aufgblatt1;
+package vokabeltrainer;
 
 /*
  *  Copyright (C) 2003 Christian Knorr.

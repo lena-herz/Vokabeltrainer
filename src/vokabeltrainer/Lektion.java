@@ -16,6 +16,10 @@ public class Lektion {
     private boolean zielsprGefr;
     private Karteikarte aktKarte;
     
+    public static void main(String[] args) {
+        System.out.println("Lektion");
+    }
+    
     public Lektion(String pName){
         pName = lName;
     }
