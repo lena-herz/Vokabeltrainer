@@ -10,16 +10,20 @@ package vokabeltrainer;
  * @author Lena
  */
 public class Karteikarte {
-    private String vokA;
-    private String vokZ;
-    private String hilfssatz;
-    private boolean gelernt;
-    private int status;
-    private boolean favorit;
+    private static String vokA;
+    private static String vokZ;
+    private static String hilfssatz;
+    private static boolean gelernt;
+    private static int status;
+    private static boolean favorit;
     
     public Karteikarte(String pVokA, String pVokZ){
         pVokA = vokA;
         pVokZ = vokZ;
+    }
+    
+    public static String getVokA(){
+        return vokA;
     }
     
 }
