@@ -21,6 +21,42 @@ public class Lektion {
     }
     
     public Lektion(String pName){
-        pName = lName;
+        lName = pName;
+    }
+    
+    public String getName(){
+        return lName;
+    }
+    
+    public void setVollstaendigGelernt(){
+        vollGelernt = true;
+    }
+    
+    public boolean getVollstaendigGelernt(){
+        return vollGelernt;
+    }
+    
+    public void setScore(int pScore){
+        score = pScore;
+    }
+    
+    public int getScore(){
+        return score;
+    }
+    
+    public void setZielsprGefragt(){
+        zielsprGefr = true;
+    }
+    
+    public boolean getZielsprGefragt(){
+        return zielsprGefr;
+    }
+    
+    public void setAktKarte(Karteikarte pAktuell){
+        aktKarte = pAktuell;
+    }
+    
+    public Karteikarte getaktKarte(){
+        return aktKarte;
     }
 }
