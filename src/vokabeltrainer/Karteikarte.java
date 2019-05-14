@@ -39,5 +39,32 @@ public class Karteikarte {
         String satz = SystemInReader.readString();
         hilfssatz = satz;
     }
+    public String getHilfssatz(){
+        return hilfssatz;
+    }
     
+    public void setStatus(int pWert){
+        status = pWert;
+    }
+    
+    public int getStatus(){
+        return status;
+    }
+    
+    public void setGelernt(){ //Frage: Was ist mit dem Parameter pGelernt? Muss der nicht egentlich noch übergeben werden? BZw. warum nicht? 
+        gelernt = true;
+    }
+    
+    public boolean getGelernt(){
+        return gelernt;
+    }
+    
+    public void setFavorit(){ 
+        favorit = true;
+    }
+    
+    public boolean getFavorit(){
+        return favorit;
+    }
+  
 }
