@@ -11,13 +11,13 @@ public class Vokabeltrainer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //System.out.println("Start");
-        
+        //Lektionen einlesen mit bufferedReader, schreiben mit bufferedWriter
+        Lektion englisch = new Lektion("Englisch");
         printMenu();
         int menu = SystemInReader.readInt();
         while(menu!=2){
             while(menu!=1){
-                System.out.println("Keine Option. Bitte geben Sie 1 oder 2");
+                System.out.println("Keine Option. Bitte geben Sie 1 oder 2 ein.");
                 menu = SystemInReader.readInt();
             }
             switch(menu){
@@ -27,8 +27,8 @@ public class Vokabeltrainer {
                     System.out.println("Bedeutung der Vokabel in der Zielsprache?");
                     String zielspr = SystemInReader.readString();
                     Karteikarte kartetmp = new Karteikarte(ausgspr, zielspr);
-                    Lektion testlektion = new Lektion("Test");
-                    testlektion.speicherInListe(kartetmp);
+                    englisch.speicherInListe(kartetmp);
+                    
                     System.out.println();
                     printMenu();
                     menu = SystemInReader.readInt();

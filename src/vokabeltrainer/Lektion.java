@@ -57,7 +57,7 @@ public class Lektion {
         aktKarte = pAktuell;
     }
     
-    public Karteikarte getaktKarte(){
+    public Karteikarte getAktKarte(){
         return aktKarte;
     }
     
@@ -65,13 +65,14 @@ public class Lektion {
         ArrayList<Karteikarte> list = new ArrayList<>();
         
         list.add(pKarte);
-
         
+        System.out.println();
+        System.out.println("Länge der Liste: " + list.size());
         System.out.println("Liste der Lektion:");
         System.out.println();
         int i = 1;
-        for (Karteikarte str : list){
-            System.out.println(i++ + "." + str.getVokA()+ " - " + str.getVokZ());
+        for (Karteikarte karte : list){
+            System.out.println(i++ + "." + karte.getVokA()+ " - " + karte.getVokZ());
         }
     }
 }
