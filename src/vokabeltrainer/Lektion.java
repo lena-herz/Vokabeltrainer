@@ -15,6 +15,7 @@ public class Lektion {
     private int score;
     private boolean zielsprGefr;
     private Karteikarte aktKarte;
+    private ArrayList<Karteikarte> lektListe = new ArrayList<>();
     
     public static void main(String[] args) {
         System.out.println("Lektion");
@@ -61,17 +62,15 @@ public class Lektion {
         return aktKarte;
     }
     
-    public void speicherInListe(Karteikarte pKarte){
-        ArrayList<Karteikarte> list = new ArrayList<>();
-        
-        list.add(pKarte);
+    public void vokHinzufuegen(Karteikarte pKarte){                
+        lektListe.add(pKarte);
         
         System.out.println();
-        System.out.println("Länge der Liste: " + list.size());
+        System.out.println("Länge der Liste: " + lektListe.size());
         System.out.println("Liste der Lektion:");
         System.out.println();
         int i = 1;
-        for (Karteikarte karte : list){
+        for (Karteikarte karte : lektListe){
             System.out.println(i++ + "." + karte.getVokA()+ " - " + karte.getVokZ());
         }
     }
