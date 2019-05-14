@@ -51,7 +51,7 @@ public class Karteikarte {
         return status;
     }
     
-    public void setGelernt(){ //Frage: Was ist mit dem Parameter pGelernt? Muss der nicht egentlich noch übergeben werden? BZw. warum nicht? 
+    public void setGelernt(){  
         gelernt = true;
     }
     
@@ -59,8 +59,8 @@ public class Karteikarte {
         return gelernt;
     }
     
-    public void setFavorit(){ 
-        favorit = true;
+    public void setFavorit(boolean pFavorit){ 
+        favorit = pFavorit;
     }
     
     public boolean getFavorit(){

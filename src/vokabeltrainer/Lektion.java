@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 package vokabeltrainer;
-
+import java.util.ArrayList;
 /**
  *
  * @author Lena
  */
 public class Lektion {
-    private String lName;
+    private final String lName;
     private boolean vollGelernt;
     private int score;
     private boolean zielsprGefr;
@@ -18,6 +18,7 @@ public class Lektion {
     
     public static void main(String[] args) {
         System.out.println("Lektion");
+    
     }
     
     public Lektion(String pName){
@@ -44,8 +45,8 @@ public class Lektion {
         return score;
     }
     
-    public void setZielsprGefragt(){
-        zielsprGefr = true;
+    public void setZielsprGefragt(boolean pZgefragt){
+        zielsprGefr = pZgefragt;
     }
     
     public boolean getZielsprGefragt(){
@@ -58,5 +59,19 @@ public class Lektion {
     
     public Karteikarte getaktKarte(){
         return aktKarte;
+    }
+    
+    public void speicherInListe(Karteikarte pKarte){
+        ArrayList<Karteikarte> list = new ArrayList<>();
+        
+        list.add(pKarte);
+
+        
+        System.out.println("Liste der Lektion:");
+        System.out.println();
+        int i = 1;
+        for (Karteikarte str : list){
+            System.out.println(i++ + "." + str.getVokA()+ " - " + str.getVokZ());
+        }
     }
 }

@@ -5,10 +5,6 @@
  */
 package vokabeltrainer;
 
-/**
- *
- * @author Lena
- */
 public class Vokabeltrainer {
 
     /**
@@ -30,10 +26,9 @@ public class Vokabeltrainer {
                     String ausgspr = SystemInReader.readString();
                     System.out.println("Bedeutung der Vokabel in der Zielsprache?");
                     String zielspr = SystemInReader.readString();
-                    Karteikarte karte1 = new Karteikarte(ausgspr, zielspr);
-                    System.out.println("Deutsche Bedeutung: " + karte1.getVokA());
-                    System.out.println("Spanische BEdeutung: " + karte1.getVokZ());
-                    
+                    Karteikarte kartetmp = new Karteikarte(ausgspr, zielspr);
+                    Lektion testlektion = new Lektion("Test");
+                    testlektion.speicherInListe(kartetmp);
                     System.out.println();
                     printMenu();
                     menu = SystemInReader.readInt();
@@ -48,4 +43,5 @@ public class Vokabeltrainer {
         System.out.println("1: neue Karteikarte anlegen");
         System.out.println("2: Programm beenden");
     }
+    
 }
