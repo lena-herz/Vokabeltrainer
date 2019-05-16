@@ -19,16 +19,16 @@ public class Kurs {
     }
     
     public Kurs (String pName){
-        pName = kName;
+        kName = pName;
     }
     
     public void lekHinzufuegen(Lektion pLektion){                
         kursListe.add(pLektion);
         
-        System.out.println();
-        int i = 1;
-        for (Lektion lektion : kursListe){
-            System.out.println(i++ + "." + lektion.getName());
-        }
+//        System.out.println();
+//        int i = 1;
+//        for (Lektion lektion : kursListe){
+//            System.out.println(i++ + "." + lektion.getName());
+//        }
     }
 }

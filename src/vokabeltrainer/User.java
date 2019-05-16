@@ -18,7 +18,29 @@ public class User {
     }
     
     public User(String pName, String pKennwort){
-        pName = uname;
-        pKennwort = kennwort;
+        uname = pName;
+        kennwort = pKennwort;
+    }
+    
+    public String getUname(){
+        return uname;
+    }
+    
+    public void setUname(){
+        System.out.println("Username?");
+        String eingUname = SystemInReader.readString();
+        
+        uname = eingUname;
+    }
+    
+    public String getKennwort(){
+        return kennwort;
+    }
+    
+    public void setKennwort(){
+        System.out.println("Kennwort?");
+        String eingKennw = SystemInReader.readString();
+        
+        kennwort = eingKennw;
     }
 }
