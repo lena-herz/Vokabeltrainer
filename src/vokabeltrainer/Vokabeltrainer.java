@@ -19,6 +19,7 @@ public class Vokabeltrainer {
     /**
      * @param args the command line arguments
      */
+    //Wir werden hier alles rundum User weghauen und den Trainer ohne Nutzer schreiben.!!!!
     public static void main(String[] args) {
         //Lektionen in Excel eingeben, als .csv speichern, einlesen mit bufferedReader(new FileReader("Datei")), schreiben mit bufferedWriter
         User user1 = new User("Username", "Kennwort");
@@ -78,7 +79,6 @@ public class Vokabeltrainer {
                     break;
             }
         }
-
     }
     
     public static void printVokmenu(){
