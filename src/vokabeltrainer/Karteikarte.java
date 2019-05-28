@@ -10,61 +10,89 @@ package vokabeltrainer;
  * @author Lena
  */
 public class Karteikarte {
+
     private String vokA;
     private String vokZ;
     private String hilfssatz;
     private boolean gelernt;
     private int status;
     private boolean favorit;
-    
+
     public static void main(String[] args) {
-        //System.out.println("Karteikarte");
+        
+    }
+
+    public Karteikarte() {
+        setVokA();
+        setVokZ();
+        menuHS();
+
     }
     
-    public Karteikarte(String pVokA, String pVokZ){
-        vokA = pVokA;
-        vokZ = pVokZ;
+    private void setVokA(){
+        System.out.println("Vokabel Ausgangssprache?");
+        String pVokA = SystemInReader.readString();
+        this.vokA = pVokA;
     }
-    
-    public String getVokA(){
+
+    public String getVokA() {
         return vokA;
     }
     
-    public String getVokZ(){
+    private void setVokZ(){
+        System.out.println("Vokabel Zielsprache?");
+        String pVokZ = SystemInReader.readString();
+        vokZ = pVokZ;
+    }
+
+    public String getVokZ() {
         return vokZ;
     }
+
+//    public void setHilfssatz() {
+//        System.out.println("Wie soll der Hilfssatz lauten?");
+//        String satz = SystemInReader.readString();
+//        hilfssatz = satz;
+//    }
     
-    public void setHilfssatz(){
-        System.out.println("Wie soll der Hilfssatz lauten?");
-        String satz = SystemInReader.readString();
-        hilfssatz = satz;
+    private void menuHS() {
+        System.out.println("Hilfssatz hinzufügen?");
+        System.out.println("1: ja");
+        System.out.println("2: nein");
+        int eingHS = SystemInReader.readInt();
+        if (eingHS == 1) {
+            System.out.println("Hilfssatz?");
+            String pHS = SystemInReader.readString();
+            this.hilfssatz = pHS;
+        }
     }
-    public String getHilfssatz(){
+
+    public String getHilfssatz() {
         return hilfssatz;
     }
-    
-    public void setStatus(int pWert){
+
+    public void setStatus(int pWert) {
         status = pWert;
     }
-    
-    public int getStatus(){
+
+    public int getStatus() {
         return status;
     }
-    
-    public void setGelernt(){  
+
+    public void setGelernt() {
         gelernt = true;
     }
-    
-    public boolean getGelernt(){
+
+    public boolean getGelernt() {
         return gelernt;
     }
-    
-    public void setFavorit(boolean pFavorit){ 
+
+    public void setFavorit(boolean pFavorit) {
         favorit = pFavorit;
     }
-    
-    public boolean getFavorit(){
+
+    public boolean getFavorit() {
         return favorit;
     }
-  
+
 }
