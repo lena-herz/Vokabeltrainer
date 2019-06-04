@@ -15,7 +15,7 @@ public class Karteikarte {
     private String vokZ;
     private String hilfssatz;
     private boolean gelernt;
-    private int status;
+    private int status; //status von 0-3 für die vier Lampen, 0 entspricht der roten Lampe, ab da aufsteigend
     private boolean favorit;
 
     public static void main(String[] args) {
@@ -25,8 +25,17 @@ public class Karteikarte {
     public Karteikarte() {
         setVokA();
         setVokZ();
-        menuHS();
-
+        menuHS();        
+        //gelernt, status und favorit stehen auf ihren Standardwerten false und 0
+    }
+    
+    public Karteikarte(String pVokA, String pVokZ, String pHS, boolean pGel, int pStatus, boolean pFav){
+        vokA = pVokA;
+        vokZ = pVokZ;
+        hilfssatz = pHS;
+        gelernt = pGel;
+        status = pStatus;
+        favorit = pFav;
     }
     
     private void setVokA(){
@@ -64,6 +73,8 @@ public class Karteikarte {
             System.out.println("Hilfssatz?");
             String pHS = SystemInReader.readString();
             this.hilfssatz = pHS;
+        }else if (eingHS == 2){
+            this.hilfssatz = "Es wurde kein Hilfssatz eingegeben.";
         }
     }
 
