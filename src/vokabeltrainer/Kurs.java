@@ -28,30 +28,36 @@ public class Kurs {
 
     //erstellt schonmal Writer und Reader, damit in mehreren Methodenabschnitten aufrufbar unabhängig von Schleifen etc.,
     //aber übergibt noch keine Datei, weil noch keine definiert
-    private static BufferedWriter kursOut;
-    private static BufferedReader kursIn;
+    private BufferedWriter kursOut;
+    private BufferedReader kursIn;
 
     public static void main(String[] args) {
 
     }
 
-    public Kurs() { //Konstruktor für wenn ein Kurs neu erstellt wird
-        System.out.println("Kursname?");
-        String pName = SystemInReader.readString();
+    //Konstruktor für wenn ein Kurs neu erstellt wird, also wenn bei einer neuen Lektion ein Kursname eingegeben wird, der noch nicht existiert
+    public Kurs(String pName) {
         kName = pName;
 
         //erstellt im Ordner "Kurslisten" eine csv-Datei, die nach dem Kursnamen benannt ist und in der die Namen aller Lektionen gespeichert werden 
         //sollen, die zu diesem Kurs gehören
-        kursFile = new File("Lektionslisten\\" + pName + ".csv");
+        kursFile = new File("Lektionslisten\\" + kName + ".csv");
+
         try {
             kursOut = new BufferedWriter(new FileWriter(kursFile));
-            kursIn = new BufferedReader(new FileReader(kursFile));
         } catch (IOException e) {
-            System.out.println("Fehler beim Erstellen des Kurses.");
+            System.out.println("Fehler beim Erstellen des Kurses (FileWriter).");
         }
 
-        lekListe.add(new Lektion(this.kName)); //wenn ich einen Kurs erstelle, soll auch direkt eine Lektion hinzugefügt werden, sonst brauch ich den Kurs nicht
+        lekListe.add(new Lektion(kName)); //wenn ich einen Kurs erstelle, soll auch direkt eine Lektion hinzugefügt werden, sonst brauch ich den Kurs nicht
         listeSpeichern();
+
+        try {
+            kursIn = new BufferedReader(new FileReader(kursFile));
+        } catch (IOException e) {
+            System.out.println("Fehler beim Erstellen des Kurses (FileReader).");
+            System.out.println(e.getMessage());
+        }
     }
 
     public Kurs(String pName, String pFile) { //Konstruktor für wenn die gespeicherten Kurse eingelesen werden
@@ -64,11 +70,8 @@ public class Kurs {
             System.out.println("Fehler beim Einlesen der Lektionsliste (FileReader).");
         }
 
-        try { //getrennt vom Reader, weil der Writer sonst die Datei leert, bevor der Reader lesen kann
-            kursOut = new BufferedWriter(new FileWriter(kursFile));
-        } catch (IOException e) {
-            System.out.println("Fehler beim Einlesen der lektionsliste (FileWriter).");
-        }
+        listeSpeichern();
+        System.out.println("Kurs eingelesen");
     }
 
     //Neue Lektion wird über "lekListe.add(new Lektion())" zur lekListe hinzugefügt, beliebig oft, dann muss am Ende listeSpeichern() aufgerufen werden, 
@@ -77,21 +80,27 @@ public class Kurs {
     //wieder mitgeschrieben werden.
     private void listeSpeichern() {
         try {
+            kursOut = new BufferedWriter(new FileWriter(kursFile));
             for (Lektion lek : lekListe) {
-                kursOut.write(lek.getName() + ";" + lek.getScore() + ";" + lek.getVollGelernt() + ";" + lek.getZielsprGefr() + ";" + lek.getFile() + ";" + lek.getMeinKurs());
+                kursOut.write(lek.getName() + ";" + lek.getScore() + ";" + lek.getVollGelernt() + ";" + lek.getZielsprGefr() + ";" + lek.getMeinKurs() + ";" + "Vokabellisten\\" + lek.getMeinKurs() + "_" + lek.getName() + ".csv" + ";");
                 kursOut.newLine();
             }
+            kursOut.write("endOfList");
             kursOut.close();
+            System.out.println("Lektionsliste gespeichert");
         } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Lektionsliste.");
+            System.out.println(e.getMessage());
         }
     }
 
     private void listeEinlesen() {
         try {
             String zeile = kursIn.readLine();
+            System.out.println(zeile);
             if (zeile != null) {
                 while (!zeile.equals("endOfList")) {
+
                     String[] split = zeile.split(";"); //teilt am ";"
 
                     //Parameter typecasten zu dem, was sie im Konstruktor sein müssen:
@@ -99,16 +108,22 @@ public class Kurs {
                     int pScore = Integer.parseInt(split[1]);
                     boolean pVollGel = Boolean.parseBoolean(split[2]);
                     boolean pZielsprGefr = Boolean.parseBoolean(split[3]);
-                    String pFile = split[4];
-                    String pMeinKurs = split[5];
+                    String pMeinKurs = split[4];
+                    String pFile = split[5];
 
-                    lekListe.add(new Lektion(pName, pScore, pVollGel, pZielsprGefr, pFile, pMeinKurs));//fügt abgespeicherte Kurse wieder zur kursListe hinzu mit den in "split" gespeicherten Informationen
+                    lekListe.add(new Lektion(pName, pScore, pVollGel, pZielsprGefr, pMeinKurs, pFile));//fügt abgespeicherte Kurse wieder zur kursListe hinzu mit den in "split" gespeicherten Informationen
                     zeile = kursIn.readLine();
                 }
             }
+            //listeSpeichern();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der Lektionsliste.");
         }
+    }
+
+    public void addLektion() {
+        lekListe.add(new Lektion(kName));
+        listeSpeichern();
     }
 
     public Lektion getLektionAt(int pIndex) {
@@ -120,7 +135,7 @@ public class Kurs {
     }
 
     public File getFile() {
-        return this.kursFile;
+        return kursFile;
     }
 
 }

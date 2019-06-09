@@ -27,14 +27,14 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     private int score; //score gibt an, wie viele Vokabeln bereits "gelernt" sind, also auf der grünen Lampe stehen
     private boolean zielsprGefr; //zielsprGefr == true bedeutet, dass der Nutzer die Vokabelbedeutung in der Zielsprache eingeben muss
     private Karteikarte aktKarte;
-    private static ArrayList<Karteikarte> vokListe = new ArrayList<>();
-    private static File lektFile;
+    private ArrayList<Karteikarte> vokListe = new ArrayList<>();
+    private File lektFile;
     private String meinKurs;
 
     //erstellt schonmal den Writer, damit in mehreren Methodenabschnitten aufrufbar unabhängig von Schleifen etc.,
     //aber übergibt noch keine Datei, weil noch keine definiert
-    private static BufferedWriter lektOut;
-    private static BufferedReader lektIn;
+    private BufferedWriter lektOut;
+    private BufferedReader lektIn;
 
     public static void main(String[] args) {
         //Lektion lekt = new Lektion();
@@ -48,38 +48,48 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         lName = pName;
         meinKurs = pMeinKurs;
 
+        //bei einer neuen Lektion soll als default-case nach der Zielsprache gefragt werden, wenn der Nutzer es umstellt, soll es dann aber gespeichert werden
+        zielsprGefr = true;
+
         //erstellt im Ordner "Vokabellisten" eine csv-Datei, die nach dem Lektionsnamen benannt wird und in der die Inhalte aller Karteikarten gespeichert werden 
         //sollen, die zu dieser Lektion gehören 
-        lektFile = new File("Vokabellisten\\" + pMeinKurs + "_" + pName + ".csv");
+        lektFile = new File("Vokabellisten\\" + meinKurs + "_" + lName + ".csv");
 
         try {
             lektOut = new BufferedWriter(new FileWriter(lektFile)); //übergibt dem Writer jetzt die Datei, auf die er schreiben soll
-            lektIn = new BufferedReader(new FileReader(lektFile));
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen der Lektion.");
         }
 
-        //bei einer neuen Lektion soll als default-case nach der Zielsprache gefragt werden, wenn der Nutzer es umstellt, soll es dann aber gespeichert werden
-        zielsprGefr = true;        
+        vokListe.add(new Karteikarte());
+        listeSpeichern();
+
+        try {
+            lektIn = new BufferedReader(new FileReader(lektFile));
+
+        } catch (IOException e) {
+            System.out.println("Fehler beim Erstellen der Lektion.");
+        }
     }
 
-    public Lektion(String pName, int pScore, boolean pVollGel, boolean pZielsprGefr, String pFile, String pMeinKurs) { //Konstruktor für wenn die gespeicherten Lektionen eingelesen werden
+    public Lektion(String pName, int pScore, boolean pVollGel, boolean pZielsprGefr, String pMeinKurs, String pFile) { //Konstruktor für wenn die gespeicherten Lektionen eingelesen werden
         lName = pName;
         score = pScore;
         vollGelernt = pVollGel;
         zielsprGefr = pZielsprGefr;
-        lektFile = new File(pFile);
         meinKurs = pMeinKurs;
-        try {            
+        lektFile = new File(pFile);
+        try {
             lektIn = new BufferedReader(new FileReader(lektFile));
+            listeEinlesen();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileReader).");
         }
-        listeEinlesen();
-        
-        try{
+
+        try {
             lektOut = new BufferedWriter(new FileWriter(lektFile));
-        }catch (IOException e){
+            listeSpeichern();
+        } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileWriter).");
         }
     }
@@ -88,13 +98,15 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     //werden, weil immer die ganze Datei überschrieben wird. Hier werden dann die Informationen von jedem Element der vokListe in die Datei geschrieben. Bei 
     //Programmaufruf muss dann die Datei wieder in die vokListe eingelesen werden, damit alle Elemente wieder vorhanden sind und beim nächsten Speichern 
     //wieder mitgeschrieben werden.
-    public static void listeSpeichern() { //ArrayOutOfBounds weil in csv-Dateien die ganzen neuen Felder nicht berücksichtigt; am besten morgen die ganzen Vokabeln einmal übers Programm eingeben
+    private void listeSpeichern() {
         try {
             for (Karteikarte krt : vokListe) {
-                lektOut.write(krt.getVokA() + ";" + krt.getVokZ() + ";" + krt.getHilfssatz() + ";" + krt.getGelernt() + ";" + krt.getStatus() + ";" + krt.getFavorit());
+                lektOut.write(krt.getVokA() + ";" + krt.getVokZ() + ";" + krt.getHilfssatz() + ";" + krt.getGelernt() + ";" + krt.getStatus() + ";" + krt.getFavorit() + ";");
                 lektOut.newLine();
             }
+            lektOut.write("endOfList");
             lektOut.close();
+            System.out.println("Vokabelliste gespeichert");
         } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Vokabelliste.");
         }
@@ -104,9 +116,10 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         try {
             String zeile = lektIn.readLine();
             if (zeile != null) {
-                while(!zeile.equals("endOfList")){
+                while (!zeile.equals("endOfList")) {
+                    System.out.println(zeile);
                     String[] split = zeile.split(";");
-                    
+
                     //Parameter typecasten zu dem, was sie im Konstruktor sein müssen
                     String pVokA = split[0];
                     String pVokZ = split[1];
@@ -114,17 +127,18 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
                     boolean pGel = Boolean.parseBoolean(split[3]);
                     int pStatus = Integer.parseInt(split[4]);
                     boolean pFav = Boolean.parseBoolean(split[5]);
-                    
+
                     vokListe.add(new Karteikarte(pVokA, pVokZ, pHS, pGel, pStatus, pFav));
                     zeile = lektIn.readLine();
-                }                  
+                }
             }
+            //listeSpeichern();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der Vokabelliste.");
         }
     }
-    
-    public Karteikarte getVokAt(int pIndex){
+
+    public Karteikarte getVokAt(int pIndex) {
         return vokListe.get(pIndex);
     }
 
@@ -167,12 +181,12 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     public Karteikarte getAktKarte() {
         return aktKarte;
     }
-    
-    public void setMeinKurs(String pMeinKurs){
+
+    public void setMeinKurs(String pMeinKurs) {
         meinKurs = pMeinKurs;
     }
-    
-    public String getMeinKurs(){
+
+    public String getMeinKurs() {
         return meinKurs;
     }
 

@@ -26,7 +26,9 @@ public class Karteikarte {
         setVokA();
         setVokZ();
         menuHS();        
-        //gelernt, status und favorit stehen auf ihren Standardwerten false und 0
+        gelernt = false;
+        status = 0;
+        favorit = false;
     }
     
     public Karteikarte(String pVokA, String pVokZ, String pHS, boolean pGel, int pStatus, boolean pFav){
@@ -57,12 +59,6 @@ public class Karteikarte {
     public String getVokZ() {
         return vokZ;
     }
-
-//    public void setHilfssatz() {
-//        System.out.println("Wie soll der Hilfssatz lauten?");
-//        String satz = SystemInReader.readString();
-//        hilfssatz = satz;
-//    }
     
     private void menuHS() {
         System.out.println("Hilfssatz hinzufügen?");
