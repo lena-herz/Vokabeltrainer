@@ -121,6 +121,7 @@ public class Vokabeltrainer {
             trainOut.close();
         } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Kursliste.");
+            //System.out.println(e.getMessage());
         }
     }
 

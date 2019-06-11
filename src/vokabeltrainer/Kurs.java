@@ -47,13 +47,14 @@ public class Kurs {
             kursOut = new BufferedWriter(new FileWriter(kursFile));
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen des Kurses (FileWriter).");
+            //System.out.println(e.getMessage());
         }
 
         lekListe.add(new Lektion(kName)); //wenn ich einen Kurs erstelle, soll auch direkt eine Lektion hinzugefügt werden, sonst brauch ich den Kurs nicht
         listeSpeichern();
 
         try {
-            //Reader hier, weil nur einmal benutzt wird, Writer weiter unten
+            //Reader hier, weil nur einmal benutzt wird
             kursIn = new BufferedReader(new FileReader(kursFile));
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen des Kurses (FileReader).");
