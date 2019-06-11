@@ -53,10 +53,11 @@ public class Kurs {
         listeSpeichern();
 
         try {
+            //Reader hier, weil nur einmal benutzt wird, Writer weiter unten
             kursIn = new BufferedReader(new FileReader(kursFile));
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen des Kurses (FileReader).");
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
     }
 
@@ -68,10 +69,10 @@ public class Kurs {
             listeEinlesen();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der Lektionsliste (FileReader).");
+            //System.out.println(e.getMessage());
         }
 
         listeSpeichern();
-        System.out.println("Kurs eingelesen");
     }
 
     //Neue Lektion wird über "lekListe.add(new Lektion())" zur lekListe hinzugefügt, beliebig oft, dann muss am Ende listeSpeichern() aufgerufen werden, 
@@ -80,6 +81,7 @@ public class Kurs {
     //wieder mitgeschrieben werden.
     private void listeSpeichern() {
         try {
+            //Writer hier, damit bei jedem Speichern ein neuer Stream geöffnet wird; gibt sonst Probleme mit dem close()
             kursOut = new BufferedWriter(new FileWriter(kursFile));
             for (Lektion lek : lekListe) {
                 kursOut.write(lek.getName() + ";" + lek.getScore() + ";" + lek.getVollGelernt() + ";" + lek.getZielsprGefr() + ";" + lek.getMeinKurs() + ";" + "Vokabellisten\\" + lek.getMeinKurs() + "_" + lek.getName() + ".csv" + ";");
@@ -87,17 +89,15 @@ public class Kurs {
             }
             kursOut.write("endOfList");
             kursOut.close();
-            System.out.println("Lektionsliste gespeichert");
         } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Lektionsliste.");
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
     }
 
     private void listeEinlesen() {
         try {
             String zeile = kursIn.readLine();
-            System.out.println(zeile);
             if (zeile != null) {
                 while (!zeile.equals("endOfList")) {
 
@@ -115,10 +115,19 @@ public class Kurs {
                     zeile = kursIn.readLine();
                 }
             }
-            //listeSpeichern();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der Lektionsliste.");
+            //System.out.println(e.getMessage());
         }
+    }
+    
+    public int lekAuflisten(int pMenuNr){
+        int menuNr = pMenuNr;
+        for (Lektion lektion : lekListe) {
+            System.out.println(menuNr + ": " + lektion.getMeinKurs() + " - " + lektion.getName());
+            menuNr++;
+        }
+        return menuNr;//gibt zurück, bei welcher Zahl die Auflistung jetzt angekommen ist
     }
 
     public void addLektion() {

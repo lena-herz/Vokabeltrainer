@@ -17,8 +17,6 @@ import java.text.*;
 import java.util.ArrayList;
 
 public class Vokabeltrainer {
-    
-    //komische NullPointerExceptions beim Speichern...
 
     private static final ArrayList<Kurs> kursListe = new ArrayList<>();
 
@@ -36,6 +34,7 @@ public class Vokabeltrainer {
             trainIn = new BufferedReader(new FileReader("Kursliste.csv"));
             listeEinlesen(); //liest alle Kurse ein, die lesen ihre Lektion ein und die wiederum ihre Vokabeln
 
+            //hier Writer auch oben, weil er nur ganz am Ende beim Schließen einmal aufgerufen wird, deswegen kein Problem mit close()
             trainOut = new BufferedWriter(new FileWriter("Kursliste.csv"));
             printMenu();
 //            Kurs tempKurs = kursListe.get(0);
@@ -44,21 +43,34 @@ public class Vokabeltrainer {
 //            System.out.println(tempKarte.getVokA() + " - " + tempKarte.getVokZ());
         } catch (IOException e) { //hier fangen wir Fehler auf, die ganz zum Schluss noch übrig sind und sonst nirgendwo behandelt werden
             System.out.println("Upsi. Irgendwo ist ein Input/Output schief gelaufen, aber ich weiß nicht genau wo. Sorry... ");
+            //System.out.println(e.getMessage());
         }
     }
 
     public static void printMenu() {
 
         System.out.println("Welche Aktion möchten Sie ausführen?");
+        System.out.println("0: Programm beenden");
         System.out.println("1: neue Lektion hinzufügen");
-        System.out.println("2: Programm beenden"); //wenn Änderung, dann auch in while-Schleife
-        int menu = SystemInReader.readInt();
-        while (menu != 2) {
-            while (menu != 1) {
-                System.out.println("Keine Option. Bitte geben Sie 1 oder 2 ein.");
-                menu = SystemInReader.readInt();
+        System.out.println("Lektion üben:");
+        int menuNr = 2;
+        for (Kurs kurs : kursListe) {//lässt jeden Kurs seine Lektionen auflisten; übergibt dabei jeweils die Zahl, mit der die Auflistung weitergehen muss
+            int menuParam = menuNr;
+            menuNr = kurs.lekAuflisten(menuParam);
+        }
+        //menuNr ist jetzt um 1 größer als die letzte Zahl, die aufgelistet wurde
+
+        int menuEing = SystemInReader.readInt();
+        while (menuEing != 0) {
+            while (menuEing >= menuNr || menuEing<0) {
+                System.out.println("Keine Option. Bitte eine der angezeigten Zahlen eingeben.");
+                menuEing = SystemInReader.readInt();
             }
-            switch (menu) {
+            switch (menuEing) {//man kann im Moment nur 1 auswählen
+            //Hier müssten wir abfragen, wie viele Menüpunkte ausgegeben wurden und dementsprechend das Menü anpassen, aber switch braucht konstante cases.
+            //Ich glaube, das geht mit switch nicht, gibt es in Swing irgendwas, was den ganzen Menü Kram leichter macht? Kann man da jeder der oben
+            //angezeigten Optionen direkt einen Listener zuteilen?
+            //Und noch nach Kursen unterteilen mit Pop-up Menü?
                 case 1:
                     System.out.println("Zu welchem Kurs gehört die Lektion?");
                     String eingKursname = SystemInReader.readString();
@@ -67,13 +79,13 @@ public class Vokabeltrainer {
 //                    System.out.println("2: ja");
 //                    int janein = SystemInReader.readInt();
 //                    if(janein == 1){
+//                        System.out.println("Neu eingeben:");
 //                        eingKursname = SystemInReader.readString();
 //                    }                            
 
                     boolean vorhanden = false;
                     for (Kurs kurs : kursListe) { //wenn schon ein Kurs mit dem eingegebenen Namen existiert, soll die Lektion zu diesem Kur hinzugefügt werden
-                        if (kurs.getName().equals(eingKursname)) {
-                            System.out.println("vorhanden");
+                        if (kurs.getName().equals(eingKursname)) {                            
                             kurs.addLektion();
                             vorhanden = true;
                         }
@@ -82,18 +94,17 @@ public class Vokabeltrainer {
                     //wenn das Programm hier angekommen ist und vorhanden nicht auf true gestellt wurde, existiert noch kein Kurs mit dem eingegebenen Namen 
                     //also wird ein neuer erstellt und dort eine Lektion hinzugefügt
                     if (vorhanden == false) {
-                        System.out.println("nicht vorhanden");
                         kursListe.add(new Kurs(eingKursname));
                     }
 
                     //hier gehts direkt wieder ins Hauptmenü
                     System.out.println();
                     printMenu();
-                    menu = SystemInReader.readInt();
+                    menuEing = SystemInReader.readInt();
                     break;
             }
         }
-        //wenn ~2~ eingegeben wurde, um das Programm zu beenden wird alles gespeichert und das Programm beendet; hier könnte man noch eine Nachfrage einfügen, 
+        //wenn ~0~ eingegeben wurde, um das Programm zu beenden wird alles gespeichert und das Programm beendet; hier könnte man noch eine Nachfrage einfügen, 
         //ob wirklich beendet werden soll
         listeSpeichern();
         System.exit(0);
@@ -108,7 +119,6 @@ public class Vokabeltrainer {
             }
             trainOut.write("endOfList");
             trainOut.close();
-            System.out.println("Kursliste gespeichert");
         } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Kursliste.");
         }
@@ -121,7 +131,6 @@ public class Vokabeltrainer {
             String zeile = trainIn.readLine();
             if (zeile != null) { //wenn Datei nicht leer
                 while (!zeile.equals("endOfList")) { //"endOfList" markiert das Ende der Datei, wird bei listeSpeichern() immer ans Ende gesetzt
-                    System.out.println(zeile);
                     String[] split = zeile.split(";"); //teilt am ";"
                     kursListe.add(new Kurs(split[0], split[1])); //fügt abgespeicherte Kurse wieder zur kursListe hinzu mit den in "split" gespeicherten Informationen
                     zeile = trainIn.readLine();
@@ -130,6 +139,7 @@ public class Vokabeltrainer {
             trainIn.close(); //immer schließen, sonst gehts nicht
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der Kursliste.");
+            //System.out.println(e.getMessage());
         }
     }
 

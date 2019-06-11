@@ -37,9 +37,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     private BufferedReader lektIn;
 
     public static void main(String[] args) {
-        //Lektion lekt = new Lektion();
-        //vokListe.add(new Karteikarte());    
-        //listeSpeichern();
+       
     }
 
     public Lektion(String pMeinKurs) { //Konstruktor für wenn eine Lektion neu erstellt wird
@@ -56,9 +54,11 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         lektFile = new File("Vokabellisten\\" + meinKurs + "_" + lName + ".csv");
 
         try {
+            //hier kein Problem mit Writer und close(), weil zu einer bestehenden Lektion nicht nachträglich etwas hinzugefügt werden soll
             lektOut = new BufferedWriter(new FileWriter(lektFile)); //übergibt dem Writer jetzt die Datei, auf die er schreiben soll
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen der Lektion.");
+            //System.out.println(e.getMessage());
         }
 
         vokListe.add(new Karteikarte());
@@ -66,9 +66,9 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
 
         try {
             lektIn = new BufferedReader(new FileReader(lektFile));
-
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen der Lektion.");
+            //System.out.println(e.getMessage());
         }
     }
 
@@ -84,6 +84,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
             listeEinlesen();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileReader).");
+            //System.out.println(e.getMessage());
         }
 
         try {
@@ -91,6 +92,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
             listeSpeichern();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileWriter).");
+            //System.out.println(e.getMessage());
         }
     }
 
@@ -106,9 +108,9 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
             }
             lektOut.write("endOfList");
             lektOut.close();
-            System.out.println("Vokabelliste gespeichert");
         } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Vokabelliste.");
+            //System.out.println(e.getMessage());
         }
     }
 
@@ -117,7 +119,6 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
             String zeile = lektIn.readLine();
             if (zeile != null) {
                 while (!zeile.equals("endOfList")) {
-                    System.out.println(zeile);
                     String[] split = zeile.split(";");
 
                     //Parameter typecasten zu dem, was sie im Konstruktor sein müssen
@@ -132,10 +133,18 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
                     zeile = lektIn.readLine();
                 }
             }
-            //listeSpeichern();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der Vokabelliste.");
+            //System.out.println(e.getMessage());
         }
+    }
+    
+    public void abfrageZ(){//fragt so, dass der Nutzer die Zielsprache eingeben muss, entspr. "zielsprGefr"
+        System.out.println("Ich möchte die Zielsprache wissen.");
+    }
+    
+    public void abfrageA(){//fragt so, dass der Nutzer die Ausgangssprache eingeben muss
+        System.out.println("Ich möchte die Ausgangssprache wissen.");
     }
 
     public Karteikarte getVokAt(int pIndex) {
