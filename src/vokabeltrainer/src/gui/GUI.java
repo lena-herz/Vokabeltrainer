@@ -37,6 +37,7 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
+import javax.swing.JToggleButton;
 
 /**
  *
@@ -53,11 +54,9 @@ public class GUI extends JFrame {
         setLayout(new BorderLayout()); //Layout muss festgelegt werden
         add(createMenuPanel(), BorderLayout.WEST); //sorgt dafür, dass das Panel auch dem Frame zugefügt wird
         add(createKartenPanel(), BorderLayout.CENTER);
-        add(createEingabePanel(), BorderLayout.SOUTH);
         add(createStatusPanel(), BorderLayout.NORTH);
-        add(createDoPanel(), BorderLayout.EAST);
-        //add(createScorePanel(), BorderLayout.PAGE_END);
-        //pageend und north überschreiben sich leider ....muss evtl noch ein panel eingebaut werden vorher mit borderlayout im Norden, dazu textarea und score dann adden?
+        add(createSouthPanel(), BorderLayout.SOUTH);
+        add(createRichtungPanel(), BorderLayout.EAST);
         //pack(); //würde Größe an Inhalt anpassen. Habe ich aber zunächst händisch eingestellt
         setLocationRelativeTo(null); //das Fenster in die Mitte vom Bildschirm setzen
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,9 +68,7 @@ public class GUI extends JFrame {
         //Layout festlegen
         menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.Y_AXIS));
         //Farbe festlegen
-        menupanel.setBackground(new java.awt.Color(0, 145, 153));
-        
-
+        menupanel.setBackground(new java.awt.Color(0, 145, 153));        
         //Buttons erstellen
         //hier Schleife, damit immer so viele Buttons erstellt werden, wie Kurse vorhanden
         JButton add = new JButton("Vokabellisten erstellen");
@@ -85,29 +82,6 @@ public class GUI extends JFrame {
         menupanel.add(add);
         return menupanel;
     }
-    // ****Statt Menu mal mit Buttons und Popup.Menüs bauen****
-
-    /* private JPanel createMenuPanel(){ 
-            
-        JPanel menupanel = new JPanel();
-        // Erstellen einer Menüleiste
-        JMenuBar bar = new JMenuBar();
-        menupanel.add(bar);
-        JMenu menu = new JMenu("Vokabeln lernen");
-        // Menü wird der Menüleiste hinzugefügt
-        bar.add(menu);
-        JMenu menu2 = new JMenu ("Vokabellisten erstellen");
-        bar.add(menu2);
-        JMenuItem item1 = new JMenuItem("");
-        // fügen das JMenuItem dem JMenu hinzu
-        menu.add(item1);
-        JMenuItem item2 = new JMenuItem("Lektion 1.2");
-        menu.add(item2);
-        JSeparator sep = new JSeparator();
-        // JSeparator wird JMenu hinzugefügt         
-        menu.add(sep);
-        return menupanel;
-    }*/
 
     private JPanel createKartenPanel() {
         JPanel kartenpanel = new JPanel();
@@ -118,48 +92,75 @@ public class GUI extends JFrame {
         return kartenpanel;
 
     }
-
-    private JPanel createEingabePanel() {
+    
+    private JPanel createRichtungPanel(){
+        JPanel richtungpanel = new JPanel();
+        JToggleButton ausgsprgefr = new JToggleButton("Ausgangsprache gefragt");
+        richtungpanel.add(ausgsprgefr);
+        JToggleButton zielsprgefr = new JToggleButton("Zielsprache gefragt");
+        richtungpanel.add(zielsprgefr);
+        return richtungpanel;
+    }
+    private JPanel createSouthPanel(){
+        JPanel southpanel = new JPanel();
+        
         JPanel eingabepanel = new JPanel();
-        //1-zeiliges und 50-spaltiges Textfeld wird 
+       //1-zeiliges und 50-spaltiges Textfeld wird 
         JTextArea eingabefeld = new JTextArea(3, 20);
         //Text für das Textfeld wird gesetzt
         eingabefeld.setText("environment"); //hier den Bezug zu den Vokabeln herstellen, die angezeigt werden sollen
-        //Zeilenumbruch wird eingeschaltet
+       //Zeilenumbruch wird eingeschaltet
         eingabefeld.setLineWrap(true);
         //Zeilenumbrüche nur nach ganzen Wörtern
         eingabefeld.setWrapStyleWord(true);
         eingabepanel.add(eingabefeld);
-        return eingabepanel;
-    }
+        southpanel.add(eingabepanel);
         
-        //Icon-buttons Häkchen, Kreuz und ? hinzufügen
-    private JPanel createDoPanel(){
         JPanel dopanel = new JPanel();
-        JButton häkchen = new JButton(
-            new ImageIcon("./Tick.png"));
+        JButton häkchen = new JButton();
+        ImageIcon ihäkchen = new ImageIcon(new ImageIcon("./Tick.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        häkchen.setIcon(ihäkchen);
         dopanel.add(häkchen);
-        JButton kreuz = new JButton(
-            new ImageIcon("./Kreuz.png"));
+        
+        JButton kreuz = new JButton();
+        ImageIcon ikreuz = new ImageIcon(new ImageIcon("./Kreuz.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        kreuz.setIcon(ikreuz);
         dopanel.add(kreuz);
-        JButton hilfssatz = new JButton(
-            new ImageIcon("./Message.png"));
+        
+        JButton hilfssatz = new JButton();
+        ImageIcon ihilfssatz = new ImageIcon(new ImageIcon("./Message.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        hilfssatz.setIcon(ihilfssatz);
         dopanel.add(hilfssatz);
-        return dopanel;
+        southpanel.add(dopanel);
+        
+        JPanel scorepanel = new JPanel();
+        JLabel scorelabel = new JLabel("Score: 13/20 gelernt; noch: 7"); //hier entsprechend Verbindung zu dem errechneten Score aus Code. Ggf. für Zahlen halt Variablne einsetzen, sodass es veränderkich wird?
+        scorepanel.add(scorelabel);    
+        southpanel.add(scorepanel);
+        return southpanel;
     }
-   
+
     private JPanel createStatusPanel(){
         JPanel statuspanel = new JPanel();
         //an diese Labels die Bedingung anknüpfen, dass sie nur angezeigt werden, wenn der entsprechdne Integer dafür besteht.
-        JLabel statuslabelrot = new JLabel(
-                    new ImageIcon ("./Lampe_rot.png")); //verwenden absoluten Pfad ggf. wenn nihct funktional?
-                //relativer Pfad wäre es nicht notwendig die exakte Lage des Bildes zu kennen. ./Lampe_rot.png wobei der Punkt aktuellen Standort angibt
-        JLabel statuslabelgelb = new JLabel(
-                    new ImageIcon ("./Lampe_gelb.png"));
-        JLabel statuslabelgrün = new JLabel(
-                    new ImageIcon ("./Lampe_gruen.png"));
-        JLabel statuslabelausgeschaltet = new JLabel(
-                    new ImageIcon ("./Lampe_ausgeschaltet.png"));
+        JLabel statuslabelrot = new JLabel();
+        ImageIcon statusrot = new ImageIcon(new ImageIcon("./Lampe_rot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        statuslabelrot.setIcon(statusrot);
+                   
+        //verwenden absoluten Pfad ggf. wenn nihct funktional?
+        //relativer Pfad wäre es nicht notwendig die exakte Lage des Bildes zu kennen. ./Lampe_rot.png wobei der Punkt aktuellen Standort angibt
+        JLabel statuslabelgelb = new JLabel();
+        ImageIcon statusgelb = new ImageIcon(new ImageIcon("./Lampe_gelb.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        statuslabelgelb.setIcon(statusgelb);
+                   
+        JLabel statuslabelgrün = new JLabel();
+        ImageIcon statusgrün = new ImageIcon(new ImageIcon("./Lampe_grün.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        statuslabelgrün.setIcon(statusgrün);
+        
+        JLabel statuslabelausgeschaltet = new JLabel();
+        ImageIcon statusausgeschaltet = new ImageIcon(new ImageIcon("./Lampe_ausgeschaltet.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        statuslabelausgeschaltet.setIcon(statusausgeschaltet);
+        
         statuspanel.add(statuslabelrot);
         statuspanel.add(statuslabelgelb);
         statuspanel.add(statuslabelgrün);
@@ -167,12 +168,6 @@ public class GUI extends JFrame {
         return statuspanel;
     }
 
-    private JPanel createScorePanel(){ //wird iwie nihct angezeigt...
-        JPanel scorepanel = new JPanel();
-        JLabel scorelabel = new JLabel("Score: 13/20 gelernt; noch: 7"); //hier entsprechend Verbindung zu dem errechneten Score aus Code. Ggf. für Zahlen halt Variablne einsetzen, sodass es veränderkich wird?
-        scorepanel.add(scorelabel);
-        return scorepanel;
-    }
     public static void main(String[] args) {
         new GUI();
 
