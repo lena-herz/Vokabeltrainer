@@ -19,6 +19,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Event;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.util.EventListener;
 import java.awt.event.ActionEvent;
@@ -37,6 +39,9 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
+import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
 /**
@@ -64,43 +69,85 @@ public class GUI extends JFrame {
     }
 
     private JPanel createMenuPanel() {
+        
         JPanel menupanel = new JPanel();
-        //Layout festlegen
+//        //Layout festlegen
         menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.Y_AXIS));
-        //Farbe festlegen
-        menupanel.setBackground(new java.awt.Color(0, 145, 153));        
-        //Buttons erstellen
-        //hier Schleife, damit immer so viele Buttons erstellt werden, wie Kurse vorhanden
-        JButton add = new JButton("Vokabellisten erstellen");
-        JButton kurs1 = new JButton("Englisch"); //im Orangenen die Verbindung zu dem vom Nutzer gewählten Kursnamen legen
-        JButton kurs2 = new JButton("Spanisch");
-        JButton kurs3 = new JButton("Französisch");
-        //Die Buttons dem Panel hinzufügen
-        menupanel.add(kurs1);
-        menupanel.add(kurs2);
-        menupanel.add(kurs3);
-        menupanel.add(add);
+//        //Farbe festlegen
+        menupanel.setBackground(new java.awt.Color(0, 145, 153)); 
+            /*  Die Button-Struktur mal ersetzt durch JComboBoxen. Dort kann man dann aus auklappender Liste auswählen. Aktuell sich die Arrays hier noch händisch eingegeben, 
+                aber Ziel ist es, dass hier die Lektionsnamen geladen werden und in einer Schleife entstprechend bestimmen, wann eine ComboBox mit Kurs erstellt wird
+                allerdings müsste, wollte man den Kursnamen mit anzeigen jeweils ein Panel über die CB gelegt werden mit dme entsprechdnen Label...
+                Was ist nun besser? Das mit den Buttons?
+                Noch eine Alternative wäre es vielleicht mit einem FileChooser zu arbeiten, wo dann die Lektionsliste ausgewählt wird, die direkt geladen wird? (vgl. https://www.java-tutorial.org/jfilechooser.html)*/
+        // Array für JComboBox
+        String comboBoxListeEng[] = {"Science and Technology", "Shopping",
+            "Sustainability", "History of GB", "Thomas Tallis School",
+            "A day in the city", "Slavery in the US", "Colonism",
+            "Democracy and Politics"};
+        String comboBoxListeSpa[] = {"En la tienda", "El mar",
+            "Las fiestas", "Cristobál Cólon"};
+        String comboBoxListeFr[] = {"Zahlen bis 20", "Zahlen ab 20"};
+        
+        //JComboBox mit den Einträgen erstellen
+        JComboBox lektionsauswahlEng = new JComboBox(comboBoxListeEng);
+        JComboBox lektionsauswahlSpa = new JComboBox (comboBoxListeSpa);
+        JComboBox lektionsauswahlFr = new JComboBox (comboBoxListeFr);
+        
+        //JComboBox wird Panel hinzugefügt
+        menupanel.add(lektionsauswahlEng);
+        menupanel.add(lektionsauswahlSpa);
+        menupanel.add(lektionsauswahlFr);
+//        //Buttons erstellen
+//        //hier Schleife, damit immer so viele Buttons erstellt werden, wie Kurse vorhanden
+//        JButton hinzu = new JButton("Vokabellisten erstellen");
+//        hinzu.setFont(new Font("Dialog", 0, 20));
+//        JButton kurs1 = new JButton("Englisch"); //im Orangenen die Verbindung zu dem vom Nutzer gewählten Kursnamen legen
+//        kurs1.setFont(new Font("Dialog", 0, 20));
+//        JButton kurs2 = new JButton("Spanisch");
+//        kurs2.setFont(new Font("Dialog", 0, 20));
+//        JButton kurs3 = new JButton("Französisch");
+//        kurs3.setFont(new Font("Dialog", 0, 20));
+//        //Die Buttons dem Panel hinzufügen
+//        menupanel.add(kurs1);
+//        menupanel.add(kurs2);
+//        menupanel.add(kurs3);
+//        menupanel.add(hinzu);
         return menupanel;
     }
 
     private JPanel createKartenPanel() {
         JPanel kartenpanel = new JPanel();
         JLabel vokAbfrage = new JLabel("die Umwelt"); //hier Verbindung zu den Vokabeln, die angezeigt werden sollen
+        vokAbfrage.setFont(new Font("Dialog", 0, 20));  
         kartenpanel.add(vokAbfrage);
-        // Legt eine schwarze einfache Linie als Border um das JPanel
+        // Legt eine weiße einfache Linie als Border um das JPanel
         kartenpanel.setBorder(BorderFactory.createLineBorder(Color.white));
         return kartenpanel;
-
     }
     
     private JPanel createRichtungPanel(){
         JPanel richtungpanel = new JPanel();
-        JToggleButton ausgsprgefr = new JToggleButton("Ausgangsprache gefragt");
-        richtungpanel.add(ausgsprgefr);
-        JToggleButton zielsprgefr = new JToggleButton("Zielsprache gefragt");
-        richtungpanel.add(zielsprgefr);
+        richtungpanel.setLayout(new BoxLayout(richtungpanel, BoxLayout.Y_AXIS));
+        ButtonGroup richtungBG = new ButtonGroup(); 
+        JRadioButton zielsprgefr = new JRadioButton("Zielsprache gefragt");
+        zielsprgefr.setFont(new Font("Dialog", 0, 20));
+        richtungBG.add(zielsprgefr); 
+        richtungpanel.add(zielsprgefr); 
+        JRadioButton ausgsprgefr = new JRadioButton("Ausgangssprache gefragt"); 
+        ausgsprgefr.setFont(new Font("Dialog", 0, 20));
+        richtungBG.add(ausgsprgefr); 
+        richtungpanel.add(ausgsprgefr); 
+        
+        JPanel scorepanel = new JPanel();
+        JLabel scorelabel = new JLabel("Score: 13/20 gelernt; noch: 7"); //hier entsprechend Verbindung zu dem errechneten Score aus Code. Ggf. für Zahlen halt Variablne einsetzen, sodass es veränderkich wird?
+        scorelabel.setFont(new Font("Dialog", 0, 20));
+        scorepanel.add(scorelabel);    
+        richtungpanel.add(scorepanel);
+        
         return richtungpanel;
     }
+    
     private JPanel createSouthPanel(){
         JPanel southpanel = new JPanel();
         
@@ -109,7 +156,8 @@ public class GUI extends JFrame {
         JTextArea eingabefeld = new JTextArea(3, 20);
         //Text für das Textfeld wird gesetzt
         eingabefeld.setText("environment"); //hier den Bezug zu den Vokabeln herstellen, die angezeigt werden sollen
-       //Zeilenumbruch wird eingeschaltet
+        eingabefeld.setFont(new Font("Dialog", 0, 20));
+        //Zeilenumbruch wird eingeschaltet
         eingabefeld.setLineWrap(true);
         //Zeilenumbrüche nur nach ganzen Wörtern
         eingabefeld.setWrapStyleWord(true);
@@ -133,22 +181,16 @@ public class GUI extends JFrame {
         dopanel.add(hilfssatz);
         southpanel.add(dopanel);
         
-        JPanel scorepanel = new JPanel();
-        JLabel scorelabel = new JLabel("Score: 13/20 gelernt; noch: 7"); //hier entsprechend Verbindung zu dem errechneten Score aus Code. Ggf. für Zahlen halt Variablne einsetzen, sodass es veränderkich wird?
-        scorepanel.add(scorelabel);    
-        southpanel.add(scorepanel);
         return southpanel;
     }
 
     private JPanel createStatusPanel(){
         JPanel statuspanel = new JPanel();
-        //an diese Labels die Bedingung anknüpfen, dass sie nur angezeigt werden, wenn der entsprechdne Integer dafür besteht.
+        //an diese Labels die Bedingung anknüpfen, dass sie nur angezeigt werden, wenn der entsprechende Integer dafür besteht.
         JLabel statuslabelrot = new JLabel();
         ImageIcon statusrot = new ImageIcon(new ImageIcon("./Lampe_rot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         statuslabelrot.setIcon(statusrot);
                    
-        //verwenden absoluten Pfad ggf. wenn nihct funktional?
-        //relativer Pfad wäre es nicht notwendig die exakte Lage des Bildes zu kennen. ./Lampe_rot.png wobei der Punkt aktuellen Standort angibt
         JLabel statuslabelgelb = new JLabel();
         ImageIcon statusgelb = new ImageIcon(new ImageIcon("./Lampe_gelb.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         statuslabelgelb.setIcon(statusgelb);
@@ -160,7 +202,7 @@ public class GUI extends JFrame {
         JLabel statuslabelausgeschaltet = new JLabel();
         ImageIcon statusausgeschaltet = new ImageIcon(new ImageIcon("./Lampe_ausgeschaltet.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         statuslabelausgeschaltet.setIcon(statusausgeschaltet);
-        
+        //Keine Ahnung, warum denn der grüne nicht angezeigt wird...auch FlowLayout hat nicht geholfen
         statuspanel.add(statuslabelrot);
         statuspanel.add(statuslabelgelb);
         statuspanel.add(statuslabelgrün);
