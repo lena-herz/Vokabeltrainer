@@ -210,10 +210,6 @@ public class GUI extends JFrame {
         return statuspanel;
     }
 
-    public static void main(String[] args) {
-        new GUI();
-
-    }
 }
 
     

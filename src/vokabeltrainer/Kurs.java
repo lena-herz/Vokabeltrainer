@@ -31,9 +31,6 @@ public class Kurs {
     private BufferedWriter kursOut;
     private BufferedReader kursIn;
 
-    public static void main(String[] args) {
-
-    }
 
     //Konstruktor für wenn ein Kurs neu erstellt wird, also wenn bei einer neuen Lektion ein Kursname eingegeben wird, der noch nicht existiert
     public Kurs(String pName) {

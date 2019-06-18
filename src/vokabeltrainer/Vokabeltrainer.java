@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.*;
 import java.util.ArrayList;
+import vokabeltrainer.src.gui.GUI;
 
 public class Vokabeltrainer {
 
@@ -29,7 +30,8 @@ public class Vokabeltrainer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try { //hier muss das Programm rein            
+        try { //hier muss das Programm rein
+            GUI gui = new GUI();
             //erstmal alles Gespeicherte einlesen:
             trainIn = new BufferedReader(new FileReader("Kursliste.csv"));
             listeEinlesen(); //liest alle Kurse ein, die lesen ihre Lektion ein und die wiederum ihre Vokabeln

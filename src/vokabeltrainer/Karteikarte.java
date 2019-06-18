@@ -18,9 +18,6 @@ public class Karteikarte {
     private int status; //status von 0-3 für die vier Lampen, 0 entspricht der roten Lampe, ab da aufsteigend
     private boolean favorit;
 
-    public static void main(String[] args) {
-        
-    }
 
     public Karteikarte() {
         setVokA();

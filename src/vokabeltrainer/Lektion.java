@@ -36,9 +36,6 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     private BufferedWriter lektOut;
     private BufferedReader lektIn;
 
-    public static void main(String[] args) {
-       
-    }
 
     public Lektion(String pMeinKurs) { //Konstruktor für wenn eine Lektion neu erstellt wird
         System.out.println("Lektionsname?");
