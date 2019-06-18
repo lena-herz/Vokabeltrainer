@@ -75,44 +75,69 @@ public class GUI extends JFrame {
         menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.Y_AXIS));
 //        //Farbe festlegen
         menupanel.setBackground(new java.awt.Color(0, 145, 153)); 
-            /*  Die Button-Struktur mal ersetzt durch JComboBoxen. Dort kann man dann aus auklappender Liste auswählen. Aktuell sich die Arrays hier noch händisch eingegeben, 
-                aber Ziel ist es, dass hier die Lektionsnamen geladen werden und in einer Schleife entstprechend bestimmen, wann eine ComboBox mit Kurs erstellt wird
-                allerdings müsste, wollte man den Kursnamen mit anzeigen jeweils ein Panel über die CB gelegt werden mit dme entsprechdnen Label...
-                Was ist nun besser? Das mit den Buttons?
-                Noch eine Alternative wäre es vielleicht mit einem FileChooser zu arbeiten, wo dann die Lektionsliste ausgewählt wird, die direkt geladen wird? (vgl. https://www.java-tutorial.org/jfilechooser.html)*/
-        // Array für JComboBox
-        String comboBoxListeEng[] = {"Science and Technology", "Shopping",
-            "Sustainability", "History of GB", "Thomas Tallis School",
-            "A day in the city", "Slavery in the US", "Colonism",
-            "Democracy and Politics"};
-        String comboBoxListeSpa[] = {"En la tienda", "El mar",
-            "Las fiestas", "Cristobál Cólon"};
-        String comboBoxListeFr[] = {"Zahlen bis 20", "Zahlen ab 20"};
         
-        //JComboBox mit den Einträgen erstellen
-        JComboBox lektionsauswahlEng = new JComboBox(comboBoxListeEng);
-        JComboBox lektionsauswahlSpa = new JComboBox (comboBoxListeSpa);
-        JComboBox lektionsauswahlFr = new JComboBox (comboBoxListeFr);
+//            /*  Die Button-Struktur mal ersetzt durch JComboBoxen. Dort kann man dann aus auklappender Liste auswählen. Aktuell sich die Arrays hier noch händisch eingegeben, 
+//                aber Ziel ist es, dass hier die Lektionsnamen geladen werden und in einer Schleife entstprechend bestimmen, wann eine ComboBox mit Kurs erstellt wird
+//                allerdings müsste, wollte man den Kursnamen mit anzeigen jeweils ein Panel über die CB gelegt werden mit dme entsprechdnen Label...
+//                Was ist nun besser? Das mit den Buttons?
+//                Noch eine Alternative wäre es vielleicht mit einem FileChooser zu arbeiten, wo dann die Lektionsliste ausgewählt wird, die direkt geladen wird? (vgl. https://www.java-tutorial.org/jfilechooser.html)*/
+//        // Array für JComboBox
+//        String comboBoxListeEng[] = {"Science and Technology", "Shopping",
+//            "Sustainability", "History of GB", "Thomas Tallis School",
+//            "A day in the city", "Slavery in the US", "Colonism",
+//            "Democracy and Politics"};
+//        String comboBoxListeSpa[] = {"En la tienda", "El mar",
+//            "Las fiestas", "Cristobál Cólon"};
+//        String comboBoxListeFr[] = {"Zahlen bis 20", "Zahlen ab 20"};
+//        
+//        //JComboBox mit den Einträgen erstellen
+//        JComboBox lektionsauswahlEng = new JComboBox(comboBoxListeEng);
+//        JComboBox lektionsauswahlSpa = new JComboBox (comboBoxListeSpa);
+//        JComboBox lektionsauswahlFr = new JComboBox (comboBoxListeFr);
+//        
+//        //JComboBox wird Panel hinzugefügt
+//        menupanel.add(lektionsauswahlEng);
+//        menupanel.add(lektionsauswahlSpa);
+//        menupanel.add(lektionsauswahlFr);
+
+    //Buttons erstellen
+        //hier Schleife, damit immer so viele Buttons erstellt werden, wie Kurse vorhanden
+        JButton kurs1 = new JButton("Englisch - Science and technology"); 
+//        kurs1.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                //Methode, was der depp machen soll dann...abfrgane ();
+//            }
+        kurs1.setFont(new Font("Dialog", 0, 20));
+        JButton kurs2 = new JButton("Spanisch - En la tienda");
+        kurs2.setFont(new Font("Dialog", 0, 20));
+        JButton kurs3 = new JButton("Sprache - Lektion");
+        kurs3.setFont(new Font("Dialog", 0, 20));
+        JButton kurs4 = new JButton("Sprache - Lektion");
+        kurs4.setFont(new Font("Dialog", 0, 20));
+        JButton kurs5 = new JButton("Sprache - Lektion");
+        kurs5.setFont(new Font("Dialog", 0, 20));
+        JButton kurs6 = new JButton("Sprache - Lektion");
+        kurs6.setFont(new Font("Dialog", 0, 20));
+        JButton kurs7 = new JButton("Sprache - Lektion");
+        kurs7.setFont(new Font("Dialog", 0, 20));
+        JButton kurs8 = new JButton("Sprache - Lektion");
+        kurs8.setFont(new Font("Dialog", 0, 20));
+        JButton kurs9 = new JButton("Sprache - Lektion");
+        kurs9.setFont(new Font("Dialog", 0, 20));
+        JButton kurs10 = new JButton("Sprache - Lektion");
+        kurs10.setFont(new Font("Dialog", 0, 20));
         
-        //JComboBox wird Panel hinzugefügt
-        menupanel.add(lektionsauswahlEng);
-        menupanel.add(lektionsauswahlSpa);
-        menupanel.add(lektionsauswahlFr);
-//        //Buttons erstellen
-//        //hier Schleife, damit immer so viele Buttons erstellt werden, wie Kurse vorhanden
-//        JButton hinzu = new JButton("Vokabellisten erstellen");
-//        hinzu.setFont(new Font("Dialog", 0, 20));
-//        JButton kurs1 = new JButton("Englisch"); //im Orangenen die Verbindung zu dem vom Nutzer gewählten Kursnamen legen
-//        kurs1.setFont(new Font("Dialog", 0, 20));
-//        JButton kurs2 = new JButton("Spanisch");
-//        kurs2.setFont(new Font("Dialog", 0, 20));
-//        JButton kurs3 = new JButton("Französisch");
-//        kurs3.setFont(new Font("Dialog", 0, 20));
-//        //Die Buttons dem Panel hinzufügen
-//        menupanel.add(kurs1);
-//        menupanel.add(kurs2);
-//        menupanel.add(kurs3);
-//        menupanel.add(hinzu);
+        //Die Buttons dem Panel hinzufügen
+        menupanel.add(kurs1);
+        menupanel.add(kurs2);
+        menupanel.add(kurs3);
+        menupanel.add(kurs4);
+        menupanel.add(kurs5);
+        menupanel.add(kurs6);
+        menupanel.add(kurs7);
+        menupanel.add(kurs8);
+        menupanel.add(kurs9);
+        menupanel.add(kurs10);
         return menupanel;
     }
 
