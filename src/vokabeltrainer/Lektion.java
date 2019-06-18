@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.*;
+import vokabeltrainer.src.gui.GUI;
 
 /**
  *
@@ -30,6 +31,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     private ArrayList<Karteikarte> vokListe = new ArrayList<>();
     private File lektFile;
     private String meinKurs;
+    private GUI gui;
 
     //erstellt schonmal den Writer, damit in mehreren Methodenabschnitten aufrufbar unabhängig von Schleifen etc.,
     //aber übergibt noch keine Datei, weil noch keine definiert
@@ -37,11 +39,12 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     private BufferedReader lektIn;
 
 
-    public Lektion(String pMeinKurs) { //Konstruktor für wenn eine Lektion neu erstellt wird
+    public Lektion(String pMeinKurs, GUI pGui) { //Konstruktor für wenn eine Lektion neu erstellt wird
         System.out.println("Lektionsname?");
         String pName = SystemInReader.readString();
         lName = pName;
         meinKurs = pMeinKurs;
+        gui = pGui;
 
         //bei einer neuen Lektion soll als default-case nach der Zielsprache gefragt werden, wenn der Nutzer es umstellt, soll es dann aber gespeichert werden
         zielsprGefr = true;
@@ -69,7 +72,8 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         }
     }
 
-    public Lektion(String pName, int pScore, boolean pVollGel, boolean pZielsprGefr, String pMeinKurs, String pFile) { //Konstruktor für wenn die gespeicherten Lektionen eingelesen werden
+    public Lektion(String pName, int pScore, boolean pVollGel, boolean pZielsprGefr, String pMeinKurs, String pFile, GUI pGui) { //Konstruktor für wenn die gespeicherten Lektionen eingelesen werden
+        gui = pGui;
         lName = pName;
         score = pScore;
         vollGelernt = pVollGel;

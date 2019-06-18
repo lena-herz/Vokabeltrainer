@@ -34,11 +34,11 @@ public class Vokabeltrainer {
             GUI gui = new GUI();
             //erstmal alles Gespeicherte einlesen:
             trainIn = new BufferedReader(new FileReader("Kursliste.csv"));
-            listeEinlesen(); //liest alle Kurse ein, die lesen ihre Lektion ein und die wiederum ihre Vokabeln
+            listeEinlesen(gui); //liest alle Kurse ein, die lesen ihre Lektion ein und die wiederum ihre Vokabeln
 
             //hier Writer auch oben, weil er nur ganz am Ende beim Schließen einmal aufgerufen wird, deswegen kein Problem mit close()
             trainOut = new BufferedWriter(new FileWriter("Kursliste.csv"));
-            printMenu();
+            printMenu(gui);
 //            Kurs tempKurs = kursListe.get(0);
 //            Lektion tempLekt = tempKurs.getLektionAt(0);
 //            Karteikarte tempKarte = tempLekt.getVokAt(0);
@@ -49,7 +49,7 @@ public class Vokabeltrainer {
         }
     }
 
-    public static void printMenu() {
+    public static void printMenu(GUI pGui) {
 
         System.out.println("Welche Aktion möchten Sie ausführen?");
         System.out.println("0: Programm beenden");
@@ -96,12 +96,12 @@ public class Vokabeltrainer {
                     //wenn das Programm hier angekommen ist und vorhanden nicht auf true gestellt wurde, existiert noch kein Kurs mit dem eingegebenen Namen 
                     //also wird ein neuer erstellt und dort eine Lektion hinzugefügt
                     if (vorhanden == false) {
-                        kursListe.add(new Kurs(eingKursname));
+                        kursListe.add(new Kurs(eingKursname, pGui));
                     }
 
                     //hier gehts direkt wieder ins Hauptmenü
                     System.out.println();
-                    printMenu();
+                    printMenu(pGui);
                     menuEing = SystemInReader.readInt();
                     break;
             }
@@ -129,13 +129,13 @@ public class Vokabeltrainer {
 
     //liest Zeile für Zeile die Datei "Kursliste.csv" ein, teilt am ";" und speichert entsprechend Kursnamen und Dateinamen der Lektionsliste in der kursListe ab
     //Problem mit Umlauten und wahrscheinlich auch nicht-lateinischen Schriftsätzen
-    private static void listeEinlesen() {
+    private static void listeEinlesen(GUI pGui) {
         try {
             String zeile = trainIn.readLine();
             if (zeile != null) { //wenn Datei nicht leer
                 while (!zeile.equals("endOfList")) { //"endOfList" markiert das Ende der Datei, wird bei listeSpeichern() immer ans Ende gesetzt
                     String[] split = zeile.split(";"); //teilt am ";"
-                    kursListe.add(new Kurs(split[0], split[1])); //fügt abgespeicherte Kurse wieder zur kursListe hinzu mit den in "split" gespeicherten Informationen
+                    kursListe.add(new Kurs(split[0], split[1], pGui)); //fügt abgespeicherte Kurse wieder zur kursListe hinzu mit den in "split" gespeicherten Informationen
                     zeile = trainIn.readLine();
                 }
             }

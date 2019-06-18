@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.*;
+import vokabeltrainer.src.gui.GUI;
 
 /**
  *
@@ -25,6 +26,7 @@ public class Kurs {
     private final String kName;
     private ArrayList<Lektion> lekListe = new ArrayList<>();
     private File kursFile;
+    private GUI gui;
 
     //erstellt schonmal Writer und Reader, damit in mehreren Methodenabschnitten aufrufbar unabhängig von Schleifen etc.,
     //aber übergibt noch keine Datei, weil noch keine definiert
@@ -33,8 +35,9 @@ public class Kurs {
 
 
     //Konstruktor für wenn ein Kurs neu erstellt wird, also wenn bei einer neuen Lektion ein Kursname eingegeben wird, der noch nicht existiert
-    public Kurs(String pName) {
+    public Kurs(String pName, GUI pGui) {
         kName = pName;
+        gui = pGui;
 
         //erstellt im Ordner "Kurslisten" eine csv-Datei, die nach dem Kursnamen benannt ist und in der die Namen aller Lektionen gespeichert werden 
         //sollen, die zu diesem Kurs gehören
@@ -47,7 +50,7 @@ public class Kurs {
             //System.out.println(e.getMessage());
         }
 
-        lekListe.add(new Lektion(kName)); //wenn ich einen Kurs erstelle, soll auch direkt eine Lektion hinzugefügt werden, sonst brauch ich den Kurs nicht
+        lekListe.add(new Lektion(kName, gui)); //wenn ich einen Kurs erstelle, soll auch direkt eine Lektion hinzugefügt werden, sonst brauch ich den Kurs nicht
         listeSpeichern();
 
         try {
@@ -59,7 +62,8 @@ public class Kurs {
         }
     }
 
-    public Kurs(String pName, String pFile) { //Konstruktor für wenn die gespeicherten Kurse eingelesen werden
+    public Kurs(String pName, String pFile, GUI pGui) { //Konstruktor für wenn die gespeicherten Kurse eingelesen werden
+        gui = pGui;
         kName = pName;
         kursFile = new File(pFile);
         try {
@@ -109,7 +113,7 @@ public class Kurs {
                     String pMeinKurs = split[4];
                     String pFile = split[5];
 
-                    lekListe.add(new Lektion(pName, pScore, pVollGel, pZielsprGefr, pMeinKurs, pFile));//fügt abgespeicherte Kurse wieder zur kursListe hinzu mit den in "split" gespeicherten Informationen
+                    lekListe.add(new Lektion(pName, pScore, pVollGel, pZielsprGefr, pMeinKurs, pFile, gui));//fügt abgespeicherte Kurse wieder zur kursListe hinzu mit den in "split" gespeicherten Informationen
                     zeile = kursIn.readLine();
                 }
             }
@@ -129,7 +133,7 @@ public class Kurs {
     }
 
     public void addLektion() {
-        lekListe.add(new Lektion(kName));
+        lekListe.add(new Lektion(kName, gui));
         listeSpeichern();
     }
 
