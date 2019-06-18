@@ -165,10 +165,10 @@ public class GUI extends JFrame {
         southpanel.add(eingabepanel);
         
         JPanel dopanel = new JPanel();
-        JButton häkchen = new JButton();
-        ImageIcon ihäkchen = new ImageIcon(new ImageIcon("./Tick.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-        häkchen.setIcon(ihäkchen);
-        dopanel.add(häkchen);
+        JButton tick = new JButton();
+        ImageIcon itick = new ImageIcon(new ImageIcon("./Tick.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        tick.setIcon(itick);
+        dopanel.add(tick);
         
         JButton kreuz = new JButton();
         ImageIcon ikreuz = new ImageIcon(new ImageIcon("./Kreuz.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
@@ -194,10 +194,10 @@ public class GUI extends JFrame {
         JLabel statuslabelgelb = new JLabel();
         ImageIcon statusgelb = new ImageIcon(new ImageIcon("./Lampe_gelb.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         statuslabelgelb.setIcon(statusgelb);
-                   
-        JLabel statuslabelgrün = new JLabel();
-        ImageIcon statusgrün = new ImageIcon(new ImageIcon("./Lampe_grün.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-        statuslabelgrün.setIcon(statusgrün);
+                           
+        JLabel statuslabelgruen = new JLabel();
+        ImageIcon statusgruen = new ImageIcon(new ImageIcon("./Lampe_gruen.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        statuslabelgruen.setIcon(statusgruen);
         
         JLabel statuslabelausgeschaltet = new JLabel();
         ImageIcon statusausgeschaltet = new ImageIcon(new ImageIcon("./Lampe_ausgeschaltet.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
@@ -205,7 +205,7 @@ public class GUI extends JFrame {
         //Keine Ahnung, warum denn der grüne nicht angezeigt wird...auch FlowLayout hat nicht geholfen
         statuspanel.add(statuslabelrot);
         statuspanel.add(statuslabelgelb);
-        statuspanel.add(statuslabelgrün);
+        statuspanel.add(statuslabelgruen);
         statuspanel.add(statuslabelausgeschaltet);
         return statuspanel;
     }
