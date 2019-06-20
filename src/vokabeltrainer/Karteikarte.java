@@ -17,24 +17,27 @@ public class Karteikarte {
     private boolean gelernt;
     private int status; //status von 0-3 für die vier Lampen, 0 entspricht der roten Lampe, ab da aufsteigend
     private boolean favorit;
+    private Lektion meineLektion;
 
 
-    public Karteikarte() {
+    public Karteikarte(Lektion pMeineLektion) {
         setVokA();
         setVokZ();
         menuHS();        
         gelernt = false;
         status = 0;
         favorit = false;
+        meineLektion = pMeineLektion;
     }
     
-    public Karteikarte(String pVokA, String pVokZ, String pHS, boolean pGel, int pStatus, boolean pFav){
+    public Karteikarte(String pVokA, String pVokZ, String pHS, boolean pGel, int pStatus, boolean pFav, Lektion pMeineLektion){
         vokA = pVokA;
         vokZ = pVokZ;
         hilfssatz = pHS;
         gelernt = pGel;
         status = pStatus;
         favorit = pFav;
+        meineLektion = pMeineLektion;
     }
     
     private void setVokA(){
@@ -77,6 +80,7 @@ public class Karteikarte {
 
     public void setStatus(int pWert) {
         status = pWert;
+        meineLektion.listeSpeichern(); //damit Status der Lampe beim nächsten Programmstart wieder übernommen wird
     }
 
     public int getStatus() {
@@ -97,6 +101,10 @@ public class Karteikarte {
 
     public boolean getFavorit() {
         return favorit;
+    }
+    
+    public Lektion getMeineLektion(){
+        return meineLektion;
     }
 
 }

@@ -43,6 +43,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
+import vokabeltrainer.Karteikarte;
 import vokabeltrainer.Kurs;
 import vokabeltrainer.Lektion;
 import vokabeltrainer.SystemInReader;
@@ -67,46 +68,55 @@ public class GUI extends JFrame {
     public JButton button2;
     public JButton button3;
     public JButton button4;
+    public JTextArea eingabefeld;
+    public JButton kreuz;
+    public JButton tick;
+    public JButton hilfssatz;
+    public JLabel statuslabel;
+    public Karteikarte aktKarte;
+    public String antwort;
+    public Lektion aktLektion;
+    public int abfrageIndex;
 
     //Konstruktor erstellen
     public GUI() {
         //super Konstruktor mit Fenstertitel aufrufen
         super("Digitaler Vokabeltrainer");
         //Größe und weitere Details zum JFrame angeben 
-        setSize(500, 500);
+        setSize(1000, 500);
         setLayout(new BorderLayout()); //Layout muss festgelegt werden
         add(menuPanel = createMenuPanel(), BorderLayout.WEST); //sorgt dafür, dass das Panel auch dem Frame zugefügt wird
         add(kartenPanel = createKartenPanel(), BorderLayout.CENTER);
         add(statusPanel = createStatusPanel(), BorderLayout.NORTH);
-        add(southPanel = createSouthPanel(), BorderLayout.SOUTH);
+        add(southPanel = createSouthPanel(this), BorderLayout.SOUTH);
         add(richtungPanel = createRichtungPanel(), BorderLayout.EAST);
         //pack(); //würde Größe an Inhalt anpassen. Habe ich aber zunächst händisch eingestellt
         setLocationRelativeTo(null); //das Fenster in die Mitte vom Bildschirm setzen
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);//JFrame sichtbar machen
-        
+
     }
-    
+
     //muss für Konstruktor erstmal leere Buttons erstellen, weil das sost mit der Reihenfolge der Übergabewerte beim Aufrufen in main nicht passt
-    private JPanel createMenuPanel(){
+    private JPanel createMenuPanel() {
         JPanel menupanel = new JPanel();
 //        //Layout festlegen
         menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.Y_AXIS));
 //        //Farbe festlegen
         menupanel.setBackground(new java.awt.Color(0, 145, 153));
-        
+
         button0 = new JButton();
         button0.setFont(new Font("Dialog", 0, 20));
-        
+
         button1 = new JButton();
         button1.setFont(new Font("Dialog", 0, 20));
-        
+
         button2 = new JButton();
         button2.setFont(new Font("Dialog", 0, 20));
-        
+
         button3 = new JButton();
         button3.setFont(new Font("Dialog", 0, 20));
-        
+
         button4 = new JButton();
         button4.setFont(new Font("Dialog", 0, 20));
 
@@ -127,7 +137,6 @@ public class GUI extends JFrame {
 //        menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.Y_AXIS));
 //          //Farbe festlegen
 //        menupanel.setBackground(new java.awt.Color(0, 145, 153));
-
 //            /*  Die Button-Struktur mal ersetzt durch JComboBoxen. Dort kann man dann aus auklappender Liste auswählen. Aktuell sind die Arrays hier noch händisch eingegeben, 
 //                aber Ziel ist es, dass hier die Lektionsnamen geladen werden und in einer Schleife entstprechend bestimmen, wann eine ComboBox mit Kurs erstellt wird
 //                allerdings müsste, wollte man den Kursnamen mit anzeigen jeweils ein Panel über die CB gelegt werden mit dem entsprechenden Label...
@@ -152,7 +161,6 @@ public class GUI extends JFrame {
 //        menupanel.add(lektionsauswahlSpa);
 //        menupanel.add(lektionsauswahlFr);
         //Buttons erstellen
-
         menuPanel.remove(button0);
         menuPanel.remove(button1);
         menuPanel.remove(button2);
@@ -166,51 +174,66 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (alleLektionen[0] != null) {
-                    alleLektionen[0].abfrageZ(pGui);
+                    aktLektion = alleLektionen[0];
+                    abfrageIndex = 0;
+                    alleLektionen[0].abfrageZ(pGui, 0);
+                    eingabefeld.setText("");
                 }
             }
         });
         button0.setFont(new Font("Dialog", 0, 20));
 
         button1 = new JButton(alleLektionen[1].getMeinKurs() + " - " + alleLektionen[1].getName());
-        button0.addActionListener(new ActionListener() {
+        button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (alleLektionen[1] != null) {
-                    alleLektionen[1].abfrageZ(pGui);
+                    aktLektion = alleLektionen[1];
+                    abfrageIndex = 0;
+                    alleLektionen[1].abfrageZ(pGui, 0);
+                    eingabefeld.setText("");
                 }
             }
         });
         button1.setFont(new Font("Dialog", 0, 20));
 
         button2 = new JButton(alleLektionen[2].getMeinKurs() + " - " + alleLektionen[2].getName());
-        button0.addActionListener(new ActionListener() {
+        button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (alleLektionen[2] != null) {
-                    alleLektionen[2].abfrageZ(pGui);
+                    aktLektion = alleLektionen[2];
+                    abfrageIndex = 0;
+                    alleLektionen[2].abfrageZ(pGui, 0);
+                    eingabefeld.setText("");
                 }
             }
         });
         button2.setFont(new Font("Dialog", 0, 20));
 
         button3 = new JButton(alleLektionen[3].getMeinKurs() + " - " + alleLektionen[3].getName());
-        button0.addActionListener(new ActionListener() {
+        button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (alleLektionen[3] != null) {
-                    alleLektionen[3].abfrageZ(pGui);
+                    aktLektion = alleLektionen[3];
+                    abfrageIndex = 0;
+                    alleLektionen[3].abfrageZ(pGui, 0);
+                    eingabefeld.setText("");
                 }
             }
         });
         button3.setFont(new Font("Dialog", 0, 20));
 
         button4 = new JButton(alleLektionen[4].getMeinKurs() + " - " + alleLektionen[4].getName());
-        button0.addActionListener(new ActionListener() {
+        button4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (alleLektionen[4] != null) {
-                    alleLektionen[4].abfrageZ(pGui);
+                    aktLektion = alleLektionen[4];
+                    abfrageIndex = 0;
+                    alleLektionen[4].abfrageZ(pGui, 0);
+                    eingabefeld.setText("");
                 }
             }
         });
@@ -234,8 +257,8 @@ public class GUI extends JFrame {
         kartenPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         return kartenPanel;
     }
-    
-    public JLabel setAbfrage(String pAbfrage){
+
+    public JLabel setAbfrage(String pAbfrage) {
         kartenPanel.remove(vokAbfrage);
         vokAbfrage = new JLabel(pAbfrage);
         vokAbfrage.setFont(new Font("Dialog", 0, 20));
@@ -267,14 +290,14 @@ public class GUI extends JFrame {
         return richtungpanel;
     }
 
-    private JPanel createSouthPanel() {
+    private JPanel createSouthPanel(GUI pGui) {
         JPanel southpanel = new JPanel();
 
         JPanel eingabepanel = new JPanel();
-        //1-zeiliges und 50-spaltiges Textfeld wird 
-        JTextArea eingabefeld = new JTextArea(3, 20);
+        //1-zeiliges und 50-spaltiges Textfeld wird         
+        eingabefeld = new JTextArea(3, 20);
         //Text für das Textfeld wird gesetzt
-        eingabefeld.setText("environment"); //hier den Bezug zu den Vokabeln herstellen, die angezeigt werden sollen
+        eingabefeld.setText("Übersetzung eingeben..."); //hier den Bezug zu den Vokabeln herstellen, die angezeigt werden sollen
         eingabefeld.setFont(new Font("Dialog", 0, 20));
         //Zeilenumbruch wird eingeschaltet
         eingabefeld.setLineWrap(true);
@@ -283,22 +306,37 @@ public class GUI extends JFrame {
         eingabepanel.add(eingabefeld);
         southpanel.add(eingabepanel);
 
-        JPanel dopanel = new JPanel();
-        JButton tick = new JButton();
+        JPanel checkpanel = new JPanel();
+        tick = new JButton();
         ImageIcon itick = new ImageIcon(new ImageIcon("./Tick.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         tick.setIcon(itick);
-        dopanel.add(tick);
+        tick.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                antwort = eingabefeld.getText();
+                useTick();
+                eingabefeld.setText("");
+                abfrageIndex++;
+                if (abfrageIndex < aktLektion.getAnzahlLek()) {
+                    aktLektion.abfrageZ(pGui, abfrageIndex);
+                }else{//fängt nach letzter Vokabel wieder bei erster an
+                    abfrageIndex = 0;
+                    aktLektion.abfrageZ(pGui, abfrageIndex);
+                }
+            }
+        });
+        checkpanel.add(tick);
 
-        JButton kreuz = new JButton();
+        kreuz = new JButton();
         ImageIcon ikreuz = new ImageIcon(new ImageIcon("./Kreuz.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         kreuz.setIcon(ikreuz);
-        dopanel.add(kreuz);
+        checkpanel.add(kreuz);
 
-        JButton hilfssatz = new JButton();
+        hilfssatz = new JButton();
         ImageIcon ihilfssatz = new ImageIcon(new ImageIcon("./Message.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         hilfssatz.setIcon(ihilfssatz);
-        dopanel.add(hilfssatz);
-        southpanel.add(dopanel);
+        checkpanel.add(hilfssatz);
+        southpanel.add(checkpanel);
 
         return southpanel;
     }
@@ -306,31 +344,77 @@ public class GUI extends JFrame {
     private JPanel createStatusPanel() {
         JPanel statuspanel = new JPanel();
         //an diese Labels die Bedingung anknüpfen, dass sie nur angezeigt werden, wenn der entsprechende Integer dafür besteht.
-        JLabel statuslabelrot = new JLabel();
-        ImageIcon statusrot = new ImageIcon(new ImageIcon("./Lampe_rot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-        statuslabelrot.setIcon(statusrot);
 
-        JLabel statuslabelgelb = new JLabel();
-        ImageIcon statusgelb = new ImageIcon(new ImageIcon("./Lampe_gelb.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-        statuslabelgelb.setIcon(statusgelb);
-
-        JLabel statuslabelgruen = new JLabel();
-        ImageIcon statusgruen = new ImageIcon(new ImageIcon("./Lampe_gruen.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-        statuslabelgruen.setIcon(statusgruen);
-
-        JLabel statuslabelausgeschaltet = new JLabel();
+        statuslabel = new JLabel();
         ImageIcon statusausgeschaltet = new ImageIcon(new ImageIcon("./Lampe_ausgeschaltet.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-        statuslabelausgeschaltet.setIcon(statusausgeschaltet);
-        //Keine Ahnung, warum denn der grüne nicht angezeigt wird...auch FlowLayout hat nicht geholfen
-        statuspanel.add(statuslabelrot);
-        statuspanel.add(statuslabelgelb);
-        statuspanel.add(statuslabelgruen);
-        statuspanel.add(statuslabelausgeschaltet);
+        statuslabel.setIcon(statusausgeschaltet);
+
+//        JLabel statuslabelrot = new JLabel();
+//        ImageIcon statusrot = new ImageIcon(new ImageIcon("./Lampe_rot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+//        statuslabelrot.setIcon(statusrot);
+//
+//        JLabel statuslabelgelb = new JLabel();
+//        ImageIcon statusgelb = new ImageIcon(new ImageIcon("./Lampe_gelb.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+//        statuslabelgelb.setIcon(statusgelb);
+//
+//        JLabel statuslabelgruen = new JLabel();
+//        ImageIcon statusgruen = new ImageIcon(new ImageIcon("./Lampe_gruen.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+//        statuslabelgruen.setIcon(statusgruen);
+//
+//        JLabel statLabAus = new JLabel();
+//        ImageIcon statusausgeschaltet = new ImageIcon(new ImageIcon("./Lampe_ausgeschaltet.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+//        statLabAus.setIcon(statusausgeschaltet);
+//        statuspanel.add(statuslabelrot);
+//        statuspanel.add(statuslabelgelb);
+//        statuspanel.add(statuslabelgruen);
+        statuspanel.add(statuslabel);
         return statuspanel;
     }
-    
-    public void setAlleLektionen(Lektion[] pArray){
+
+    public void setAlleLektionen(Lektion[] pArray) {
         alleLektionen = pArray;
+    }
+
+    public void useTick() {
+        if (antwort.equals(aktKarte.getVokZ())) {
+            if (aktKarte.getStatus() != 3) {
+                int stat = aktKarte.getStatus() + 1;
+                aktKarte.setStatus(stat);
+                updateStatusPanel(aktKarte.getStatus());
+            }
+        } else {
+            aktKarte.setStatus(0);
+            updateStatusPanel(aktKarte.getStatus());
+        }
+
+    }
+
+    public void updateStatusPanel(int pStatus) {
+        switch (pStatus) {
+            case 0:
+                ImageIcon statusRot = new ImageIcon(new ImageIcon("./Lampe_rot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+                statuslabel.setIcon(statusRot);
+                statusPanel.updateUI();
+                break;
+
+            case 1:
+                ImageIcon statusOrange = new ImageIcon(new ImageIcon("./Lampe_orange.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+                statuslabel.setIcon(statusOrange);
+                statusPanel.updateUI();
+                break;
+
+            case 2:
+                ImageIcon statusGelb = new ImageIcon(new ImageIcon("./Lampe_gelb.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+                statuslabel.setIcon(statusGelb);
+                statusPanel.updateUI();
+                break;
+
+            case 3:
+                ImageIcon statusGruen = new ImageIcon(new ImageIcon("./Lampe_gruen.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+                statuslabel.setIcon(statusGruen);
+                statusPanel.updateUI();
+                break;
+        }
     }
 
 }

@@ -34,6 +34,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     private File lektFile;
     private String meinKurs;
     private GUI gui;
+    private String antwort;
 
     //erstellt schonmal den Writer, damit in mehreren Methodenabschnitten aufrufbar unabhängig von Schleifen etc.,
     //aber übergibt noch keine Datei, weil noch keine definiert
@@ -62,7 +63,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
             //System.out.println(e.getMessage());
         }
 
-        vokListe.add(new Karteikarte());
+        vokListe.add(new Karteikarte(this));
         listeSpeichern();
 
         try {
@@ -102,8 +103,9 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     //werden, weil immer die ganze Datei überschrieben wird. Hier werden dann die Informationen von jedem Element der vokListe in die Datei geschrieben. Bei 
     //Programmaufruf muss dann die Datei wieder in die vokListe eingelesen werden, damit alle Elemente wieder vorhanden sind und beim nächsten Speichern 
     //wieder mitgeschrieben werden.
-    private void listeSpeichern() {
+    public void listeSpeichern() {
         try {
+            lektOut = new BufferedWriter(new FileWriter(lektFile));
             for (Karteikarte krt : vokListe) {
                 lektOut.write(krt.getVokA() + ";" + krt.getVokZ() + ";" + krt.getHilfssatz() + ";" + krt.getGelernt() + ";" + krt.getStatus() + ";" + krt.getFavorit() + ";");
                 lektOut.newLine();
@@ -131,7 +133,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
                     int pStatus = Integer.parseInt(split[4]);
                     boolean pFav = Boolean.parseBoolean(split[5]);
 
-                    vokListe.add(new Karteikarte(pVokA, pVokZ, pHS, pGel, pStatus, pFav));
+                    vokListe.add(new Karteikarte(pVokA, pVokZ, pHS, pGel, pStatus, pFav, this));
                     zeile = lektIn.readLine();
                 }
             }
@@ -141,14 +143,19 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         }
     }
 
-    public void abfrageZ(GUI pGui) { //fragt so, dass der Nutzer die Zielsprache eingeben muss, entspr. "zielsprGefr"
-        System.out.println("Ich möchte die Zielsprache wissen.");
-        pGui.vokAbfrage = pGui.setAbfrage(vokListe.get(0).getVokA());
+    public void abfrageZ(GUI pGui, int pIndex) { //fragt so, dass der Nutzer die Zielsprache eingeben muss, entspr. "zielsprGefr"
+        aktKarte = vokListe.get(pIndex);
+        pGui.aktKarte = aktKarte;
+        pGui.vokAbfrage = pGui.setAbfrage(aktKarte.getVokA());
         pGui.kartenPanel.updateUI();
+        pGui.updateStatusPanel(aktKarte.getStatus());
 
 //        vokListe.forEach((karte) -> {
-//            pGui.vokAbfrage = pGui.setAbfrage(karte.getVokA());
+//            aktKarte = karte;
+//            pGui.aktKarte = aktKarte;
+//            pGui.vokAbfrage = pGui.setAbfrage(aktKarte.getVokA());
 //            pGui.kartenPanel.updateUI();
+//            pGui.updateStatusPanel(aktKarte.getStatus());
 //        });
     }
 
@@ -206,6 +213,15 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
 
     public String getMeinKurs() {
         return meinKurs;
+    }
+
+    public void setAntwort(String pAntwort) {
+        antwort = pAntwort;
+    }
+    
+    public int getAnzahlLek(){
+        int anzahl = vokListe.size();
+        return anzahl;
     }
 
 }

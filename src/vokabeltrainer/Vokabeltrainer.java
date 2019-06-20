@@ -41,10 +41,8 @@ public class Vokabeltrainer {
             listeSpeichern();
             
             gui.setAlleLektionen(alleLektionen());
-            System.out.println(gui.alleLektionen.length);
             gui.menuPanel = gui.updateMenuPanel(gui);
-            gui.menuPanel.updateUI();
-            
+            gui.menuPanel.updateUI();            
             
 //            printMenu(gui);
         } catch (IOException e) { //hier fangen wir Fehler auf, die ganz zum Schluss noch übrig sind und sonst nirgendwo behandelt werden
@@ -67,16 +65,6 @@ public class Vokabeltrainer {
 //        }
         //menuNr ist jetzt um 1 größer als die letzte Zahl, die aufgelistet wurde
         
-//        Lektion[] alleLek = lekAuflisten();
-//        for (int i = 0; i < 10; i++) {
-//            if(alleLek[i] != null){
-//                System.out.println(alleLek[i].getName());
-//            }else{
-//                System.out.println("leer");
-//            }
-//            
-//        }
-
         int menuEing = SystemInReader.readInt();
         while (menuEing != 0) {
             while (menuEing >= 11 || menuEing < 0) {
@@ -91,14 +79,14 @@ public class Vokabeltrainer {
                 case 1:
                     System.out.println("Zu welchem Kurs gehört die Lektion?");
                     String eingKursname = SystemInReader.readString();
-//                    System.out.println("Alles richtig geschrieben? : " + eingKursname); //die Sache mit den Tippfehlern
-//                    System.out.println("1: nein");
-//                    System.out.println("2: ja");
-//                    int janein = SystemInReader.readInt();
-//                    if(janein == 1){
-//                        System.out.println("Neu eingeben:");
-//                        eingKursname = SystemInReader.readString();
-//                    }                            
+                    System.out.println("Alles richtig geschrieben? : " + eingKursname); //die Sache mit den Tippfehlern
+                    System.out.println("1: nein");
+                    System.out.println("2: ja");
+                    int janein = SystemInReader.readInt();
+                    if(janein == 1){
+                        System.out.println("Neu eingeben:");
+                        eingKursname = SystemInReader.readString();
+                    }                            
 
                     boolean vorhanden = false;
                     for (Kurs kurs : kursListe) { //wenn schon ein Kurs mit dem eingegebenen Namen existiert, soll die Lektion zu diesem Kur hinzugefügt werden
