@@ -123,15 +123,17 @@ public class Kurs {
         }
     }
     
-    public int lekAuflisten(int pMenuNr){
-        int menuNr = pMenuNr;
+    public Object[] lekAuflisten(Lektion[] pArray, int pIndex){
+        Object[] indexUndArray = new Object[2];
+        int index = pIndex;
         for (Lektion lektion : lekListe) {
-            System.out.println(menuNr + ": " + lektion.getMeinKurs() + " - " + lektion.getName());
-            menuNr++;
+            pArray[index] = lektion;
+            index++;
         }
-        return menuNr;//gibt zurück, bei welcher Zahl die Auflistung jetzt angekommen ist
+        return indexUndArray;//gibt zurück, bei welcher Zahl die Auflistung jetzt angekommen ist
     }
 
+    //brauchten wir mal, jetzt nicht mehr, lassen wir aber erstmal drin
     public void addLektion() {
         lekListe.add(new Lektion(kName, gui));
         listeSpeichern();
@@ -147,6 +149,10 @@ public class Kurs {
 
     public File getFile() {
         return kursFile;
+    }
+    
+    public int getAnzahlLek(){
+        return lekListe.size();
     }
 
 }

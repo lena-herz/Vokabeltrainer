@@ -19,7 +19,7 @@ import vokabeltrainer.src.gui.GUI;
 
 public class Vokabeltrainer {
 
-    private static final ArrayList<Kurs> kursListe = new ArrayList<>();
+    public static ArrayList<Kurs> kursListe = new ArrayList<>();
 
     //erstellt schonmal den Writer, damit in mehreren Methodenabschnitten aufrufbar unabhängig von Schleifen etc.,
     //aber übergibt noch keine Datei, weil hier die IOException nicht gethrowt werden kann
@@ -30,7 +30,7 @@ public class Vokabeltrainer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try { //hier muss das Programm rein
+        try { //hier muss das Programm rein     
             GUI gui = new GUI();
             //erstmal alles Gespeicherte einlesen:
             trainIn = new BufferedReader(new FileReader("Kursliste.csv"));
@@ -38,41 +38,56 @@ public class Vokabeltrainer {
 
             //hier Writer auch oben, weil er nur ganz am Ende beim Schließen einmal aufgerufen wird, deswegen kein Problem mit close()
             trainOut = new BufferedWriter(new FileWriter("Kursliste.csv"));
-            printMenu(gui);
-//            Kurs tempKurs = kursListe.get(0);
-//            Lektion tempLekt = tempKurs.getLektionAt(0);
-//            Karteikarte tempKarte = tempLekt.getVokAt(0);
-//            System.out.println(tempKarte.getVokA() + " - " + tempKarte.getVokZ());
+            listeSpeichern();
+            
+            gui.setAlleLektionen(alleLektionen());
+            System.out.println(gui.alleLektionen.length);
+            gui.menuPanel = gui.updateMenuPanel(gui);
+            gui.menuPanel.updateUI();
+            
+            
+//            printMenu(gui);
         } catch (IOException e) { //hier fangen wir Fehler auf, die ganz zum Schluss noch übrig sind und sonst nirgendwo behandelt werden
             System.out.println("Upsi. Irgendwo ist ein Input/Output schief gelaufen, aber ich weiß nicht genau wo. Sorry... ");
             //System.out.println(e.getMessage());
         }
     }
 
+    //brauchen wir ja jetzt quasi auch nicht mehr
     public static void printMenu(GUI pGui) {
 
         System.out.println("Welche Aktion möchten Sie ausführen?");
         System.out.println("0: Programm beenden");
         System.out.println("1: neue Lektion hinzufügen");
         System.out.println("Lektion üben:");
-        int menuNr = 2;
-        for (Kurs kurs : kursListe) {//lässt jeden Kurs seine Lektionen auflisten; übergibt dabei jeweils die Zahl, mit der die Auflistung weitergehen muss
-            int menuParam = menuNr;
-            menuNr = kurs.lekAuflisten(menuParam);
-        }
+//        int menuNr = 2;
+//        for (Kurs kurs : kursListe) {//lässt jeden Kurs seine Lektionen auflisten; übergibt dabei jeweils die Zahl, mit der die Auflistung weitergehen muss
+//            int menuParam = menuNr;
+//            menuNr = kurs.lekAuflisten(menuParam);
+//        }
         //menuNr ist jetzt um 1 größer als die letzte Zahl, die aufgelistet wurde
+        
+//        Lektion[] alleLek = lekAuflisten();
+//        for (int i = 0; i < 10; i++) {
+//            if(alleLek[i] != null){
+//                System.out.println(alleLek[i].getName());
+//            }else{
+//                System.out.println("leer");
+//            }
+//            
+//        }
 
         int menuEing = SystemInReader.readInt();
         while (menuEing != 0) {
-            while (menuEing >= menuNr || menuEing<0) {
+            while (menuEing >= 11 || menuEing < 0) {
                 System.out.println("Keine Option. Bitte eine der angezeigten Zahlen eingeben.");
                 menuEing = SystemInReader.readInt();
             }
             switch (menuEing) {//man kann im Moment nur 1 auswählen
-            //Hier müssten wir abfragen, wie viele Menüpunkte ausgegeben wurden und dementsprechend das Menü anpassen, aber switch braucht konstante cases.
-            //Ich glaube, das geht mit switch nicht, gibt es in Swing irgendwas, was den ganzen Menü Kram leichter macht? Kann man da jeder der oben
-            //angezeigten Optionen direkt einen Listener zuteilen?
-            //Und noch nach Kursen unterteilen mit Pop-up Menü?
+                //Hier müssten wir abfragen, wie viele Menüpunkte ausgegeben wurden und dementsprechend das Menü anpassen, aber switch braucht konstante cases.
+                //Ich glaube, das geht mit switch nicht, gibt es in Swing irgendwas, was den ganzen Menü Kram leichter macht? Kann man da jeder der oben
+                //angezeigten Optionen direkt einen Listener zuteilen?
+                //Und noch nach Kursen unterteilen mit Pop-up Menü?
                 case 1:
                     System.out.println("Zu welchem Kurs gehört die Lektion?");
                     String eingKursname = SystemInReader.readString();
@@ -87,7 +102,7 @@ public class Vokabeltrainer {
 
                     boolean vorhanden = false;
                     for (Kurs kurs : kursListe) { //wenn schon ein Kurs mit dem eingegebenen Namen existiert, soll die Lektion zu diesem Kur hinzugefügt werden
-                        if (kurs.getName().equals(eingKursname)) {                            
+                        if (kurs.getName().equals(eingKursname)) {
                             kurs.addLektion();
                             vorhanden = true;
                         }
@@ -108,7 +123,6 @@ public class Vokabeltrainer {
         }
         //wenn ~0~ eingegeben wurde, um das Programm zu beenden wird alles gespeichert und das Programm beendet; hier könnte man noch eine Nachfrage einfügen, 
         //ob wirklich beendet werden soll
-        listeSpeichern();
         System.exit(0);
 
     }
@@ -116,7 +130,7 @@ public class Vokabeltrainer {
     public static void listeSpeichern() { //überschreibt vorhandene Datei "Kursliste.csv" mit allen Elementen, die jetzt in der kursListe sind        
         try {
             for (Kurs kurs : kursListe) {
-                trainOut.write(kurs.getName() + ";" + "Lektionslisten\\"+kurs.getName()+".csv" + ";");
+                trainOut.write(kurs.getName() + ";" + "Lektionslisten\\" + kurs.getName() + ".csv" + ";");
                 trainOut.newLine();
             }
             trainOut.write("endOfList");
@@ -144,6 +158,31 @@ public class Vokabeltrainer {
             System.out.println("Fehler beim Einlesen der Kursliste.");
             //System.out.println(e.getMessage());
         }
+    }
+
+//    public static Lektion[] lekAuflisten() {
+//        Lektion[] aufgelisteteLek = new Lektion[5];
+//        int index = 0;
+//        for (Kurs kurs : kursListe) {//lässt jeden Kurs seine Lektionen auflisten; übergibt dabei jeweils die Zahl, mit der die Auflistung weitergehen muss
+//            index = kurs.lekAuflisten(aufgelisteteLek, index);
+//        }  
+//        return aufgelisteteLek;
+//    }
+    
+    public static Lektion[] alleLektionen(){        
+        int anzahlLek = 0;
+        for (Kurs kurs : kursListe) {
+            anzahlLek = anzahlLek + kurs.getAnzahlLek();
+        }
+        Lektion[] alleLek = new Lektion[anzahlLek];
+        int index = 0;
+        for (Kurs kurs : kursListe) {
+            for (int i = 0; i < kurs.getAnzahlLek(); i++) {
+                alleLek[index] = kurs.getLektionAt(i);
+                index++;
+            }
+        }
+        return alleLek;
     }
 
 }

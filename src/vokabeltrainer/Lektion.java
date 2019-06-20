@@ -15,6 +15,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import vokabeltrainer.src.gui.GUI;
 
 /**
@@ -37,7 +39,6 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     //aber übergibt noch keine Datei, weil noch keine definiert
     private BufferedWriter lektOut;
     private BufferedReader lektIn;
-
 
     public Lektion(String pMeinKurs, GUI pGui) { //Konstruktor für wenn eine Lektion neu erstellt wird
         System.out.println("Lektionsname?");
@@ -139,12 +140,19 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
             //System.out.println(e.getMessage());
         }
     }
-    
-    public void abfrageZ(){//fragt so, dass der Nutzer die Zielsprache eingeben muss, entspr. "zielsprGefr"
+
+    public void abfrageZ(GUI pGui) { //fragt so, dass der Nutzer die Zielsprache eingeben muss, entspr. "zielsprGefr"
         System.out.println("Ich möchte die Zielsprache wissen.");
+        pGui.vokAbfrage = pGui.setAbfrage(vokListe.get(0).getVokA());
+        pGui.kartenPanel.updateUI();
+
+//        vokListe.forEach((karte) -> {
+//            pGui.vokAbfrage = pGui.setAbfrage(karte.getVokA());
+//            pGui.kartenPanel.updateUI();
+//        });
     }
-    
-    public void abfrageA(){//fragt so, dass der Nutzer die Ausgangssprache eingeben muss
+
+    public void abfrageA() {//fragt so, dass der Nutzer die Ausgangssprache eingeben muss
         System.out.println("Ich möchte die Ausgangssprache wissen.");
     }
 
