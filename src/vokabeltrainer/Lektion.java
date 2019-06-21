@@ -141,13 +141,17 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     public void abfrage(GUI pGui, int pIndex) { //fragt je nach Wert von fZielsprGefr ab, bei true muss Nutzer Zielsprache eingeben, bei false Ausgangssprache
         aktKarte = vokListe.get(pIndex);
         pGui.aktKarte = aktKarte;
-        if(pGui.fZielsprGefr == true){
-            pGui.vokAbfrage = pGui.setAbfrage(aktKarte.getVokA());
-        }else{
-            pGui.vokAbfrage = pGui.setAbfrage(aktKarte.getVokZ());
-        }        
-        pGui.kartenPanel.updateUI();
-        pGui.updateStatusPanel(aktKarte.getStatus());
+        if (aktKarte.getGelernt() == false) {//wenn die Lampe noch nicht grün ist, wird abgefragt
+            if (pGui.fZielsprGefr == true) {
+                pGui.vokAbfrage = pGui.setAbfrage(aktKarte.getVokA());
+            } else {
+                pGui.vokAbfrage = pGui.setAbfrage(aktKarte.getVokZ());
+            }
+            pGui.kartenPanel.updateUI();
+            pGui.updateStatusPanel(aktKarte.getStatus());
+        }else{//wenn Lampe schon grün, wird die nächste Karteikarte der Liste aufgerufen
+            abfrage(pGui, (pIndex+1));
+        }
     }
 
     public Karteikarte getVokAt(int pIndex) {
@@ -170,7 +174,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         return vollGelernt;
     }
 
-    public void setScore(int pScore) {
+    public void setScore(int pScore) {//brauchen wir glaube ich nicht
         score = pScore;
     }
 
@@ -197,10 +201,20 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     public void setAntwort(String pAntwort) {
         antwort = pAntwort;
     }
-    
-    public int getAnzahlLek(){
+
+    public int getAnzahlVok() {
         int anzahl = vokListe.size();
         return anzahl;
+    }
+    
+    public int getAnzahlGel(){ //geht vokListe durch und zählt dabei, bei wievielen der Karteikarten das Attribut gelernt true ist
+        int anzahlGel=0;
+        for (Karteikarte karte : vokListe) {
+            if(karte.getGelernt()==true){
+                anzahlGel++;
+            }
+        }
+        return anzahlGel;
     }
 
 }

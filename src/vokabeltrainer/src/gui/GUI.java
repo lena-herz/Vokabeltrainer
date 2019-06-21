@@ -78,6 +78,7 @@ public class GUI extends JFrame {
     public Lektion aktLektion;
     public int abfrageIndex;
     public boolean fZielsprGefr = true; //fZielsprGefr == true bedeutet, dass der Nutzer die Vokabelbedeutung in der Zielsprache eingeben muss
+    public JLabel scorelabel;
 
     //Konstruktor erstellen
     public GUI() {
@@ -98,7 +99,8 @@ public class GUI extends JFrame {
 
     }
 
-    //muss für Konstruktor erstmal leere Buttons erstellen, weil das sost mit der Reihenfolge der Übergabewerte beim Aufrufen in main nicht passt
+    //muss für Konstruktor erstmal leere Buttons erstellen, weil das sost mit der Reihenfolge der Übergabewerte beim Aufrufen in main nicht passt, weil die
+    //Lektionen zu dem Zeitpunkt noch nicht eingelesen sein können
     private JPanel createMenuPanel() {
         JPanel menupanel = new JPanel();
 //        //Layout festlegen
@@ -130,7 +132,7 @@ public class GUI extends JFrame {
         return menupanel;
     }
 
-    //hier werden die leeren Buttons dann entfernt und durch die neuen mit richitger Aufschrift ersetzt
+    //hier werden die leeren Buttons dann entfernt und durch die neuen mit richtiger Aufschrift ersetzt
     public JPanel updateMenuPanel(GUI pGui) {
 
 //        JPanel menupanel = new JPanel();
@@ -177,7 +179,8 @@ public class GUI extends JFrame {
                 if (alleLektionen[0] != null) {
                     aktLektion = alleLektionen[0];
                     abfrageIndex = 0;
-                    alleLektionen[0].abfrage(pGui, 0);
+                    updateScore();
+                    alleLektionen[0].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
                 }
             }
@@ -191,7 +194,8 @@ public class GUI extends JFrame {
                 if (alleLektionen[1] != null) {
                     aktLektion = alleLektionen[1];
                     abfrageIndex = 0;
-                    alleLektionen[1].abfrage(pGui, 0);
+                    updateScore();
+                    alleLektionen[1].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
                 }
             }
@@ -205,7 +209,8 @@ public class GUI extends JFrame {
                 if (alleLektionen[2] != null) {
                     aktLektion = alleLektionen[2];
                     abfrageIndex = 0;
-                    alleLektionen[2].abfrage(pGui, 0);
+                    updateScore();
+                    alleLektionen[2].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
                 }
             }
@@ -219,7 +224,8 @@ public class GUI extends JFrame {
                 if (alleLektionen[3] != null) {
                     aktLektion = alleLektionen[3];
                     abfrageIndex = 0;
-                    alleLektionen[3].abfrage(pGui, 0);
+                    updateScore();
+                    alleLektionen[3].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
                 }
             }
@@ -233,7 +239,8 @@ public class GUI extends JFrame {
                 if (alleLektionen[4] != null) {
                     aktLektion = alleLektionen[4];
                     abfrageIndex = 0;
-                    alleLektionen[4].abfrage(pGui, 0);
+                    updateScore();
+                    alleLektionen[4].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
                 }
             }
@@ -281,7 +288,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fZielsprGefr = true;
-                if(aktKarte != null){
+                if (aktKarte != null) {
                     setAbfrage(aktKarte.getVokA());
                     kartenPanel.updateUI();
                 }
@@ -296,7 +303,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fZielsprGefr = false;
-                if(aktKarte != null){
+                if (aktKarte != null) {
                     setAbfrage(aktKarte.getVokZ());
                     kartenPanel.updateUI();
                 }
@@ -306,7 +313,7 @@ public class GUI extends JFrame {
         richtungpanel.add(bAusgsprGefr);
 
         JPanel scorepanel = new JPanel();
-        JLabel scorelabel = new JLabel("Score: 13/20 gelernt; noch: 7"); //hier entsprechend Verbindung zu dem errechneten Score aus Code. Ggf. für Zahlen halt Variablne einsetzen, sodass es veränderkich wird?
+        scorelabel = new JLabel("Score: 0/0 gelernt - noch: 0"); //hier entsprechend Verbindung zu dem errechneten Score aus Code. Ggf. für Zahlen halt Variablne einsetzen, sodass es veränderkich wird?
         scorelabel.setFont(new Font("Dialog", 0, 20));
         scorepanel.add(scorelabel);
         richtungpanel.add(scorepanel);
@@ -341,7 +348,7 @@ public class GUI extends JFrame {
                 useTick();
                 eingabefeld.setText("");
                 abfrageIndex++;
-                if (abfrageIndex < aktLektion.getAnzahlLek()) {//ruft Abfrage für nächste Vokabel in der Liste auf
+                if (abfrageIndex < aktLektion.getAnzahlVok()) {//ruft Abfrage für nächste Vokabel in der Liste auf
                     aktLektion.abfrage(pGui, abfrageIndex);
                 } else {//fängt nach letzter Vokabel wieder bei erster an
                     abfrageIndex = 0;
@@ -400,30 +407,36 @@ public class GUI extends JFrame {
     }
 
     public void useTick() {
-        if (fZielsprGefr == true) {//gucken, in welchem Modus gerade abgefragt wird, hier muss Zielsprache eingegeben werden
+        if (fZielsprGefr == true) {//gucken, in welchem Modus gerade abgefragt wird; hier muss Zielsprache eingegeben werden
             if (antwort.equals(aktKarte.getVokZ())) {//prüfen, ob Eingabe mit gespeicherter Übersetzung übereinstimmt
-                if (aktKarte.getStatus() != 3) {//prüfen, ob Lampe schon auf grün steht; wenn nicht, um eine Stufe erhöhen; wenn ja, passiert (erstmal) nichts
-                    int stat = aktKarte.getStatus() + 1;
-                    aktKarte.setStatus(stat);
-                    updateStatusPanel(aktKarte.getStatus());
-                }
+                //erhöht Status der aktuell abgefragten Karteikarte um 1; da aufgrund der Überprufung in abfrage() eine Karte mit grüner Lampe gar nicht
+                //angezeigt wird, muss dieser Fall hier nicht mehr berücksichtigt werden
+                int statZ = aktKarte.getStatus() + 1;
+                aktKarte.setStatus(statZ);
+                System.out.println(aktKarte.getStatus());//raus
+                updateStatusPanel(aktKarte.getStatus());
+                updateScore();
             } else {//wenn falsche Antwort gegeben, wird Lampe auf rot gesetzt
                 aktKarte.setStatus(0);
                 updateStatusPanel(aktKarte.getStatus());
+                updateScore();
             }
         } else {//anderer Abfragemodus, hier muss Ausgangssprache eingegeben werden
             if (antwort.equals(aktKarte.getVokA())) {//prüfen, ob Eingabe mit gespeicherter Übersetzung übereinstimmt
-                if (aktKarte.getStatus() != 3) {//prüfen, ob Lampe schon auf grün steht; wenn nicht, um eine Stufe erhöhen; wenn ja, passiert (erstmal) nichts
-                    int stat = aktKarte.getStatus() + 1;
-                    aktKarte.setStatus(stat);
-                    updateStatusPanel(aktKarte.getStatus());
-                }
+                //s. oben
+                System.out.println(aktKarte.getVokA() + " - richtig");
+                int statA = aktKarte.getStatus() + 1;
+                aktKarte.setStatus(statA);
+                System.out.println(aktKarte.getStatus());//raus
+                updateStatusPanel(aktKarte.getStatus());
+                updateScore();
             } else {//wenn falsche Antwort gegeben, wird Lampe auf rot gesetzt
+                System.out.println(aktKarte.getVokA() + " - falsch");
                 aktKarte.setStatus(0);
                 updateStatusPanel(aktKarte.getStatus());
+                updateScore();
             }
         }
-
     }
 
     public void updateStatusPanel(int pStatus) {
@@ -452,6 +465,14 @@ public class GUI extends JFrame {
                 statusPanel.updateUI();
                 break;
         }
+    }
+
+    public void updateScore() {
+        int fullScore = aktLektion.getAnzahlVok();
+        int anzGelernt = aktLektion.getAnzahlGel();
+        int anzRest = fullScore - anzGelernt;
+        scorelabel.setText("Score: " + anzGelernt + "/" + fullScore + " - noch:" + anzRest);
+        richtungPanel.updateUI();
     }
 
 }
