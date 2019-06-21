@@ -77,6 +77,7 @@ public class GUI extends JFrame {
     public String antwort;
     public Lektion aktLektion;
     public int abfrageIndex;
+    public boolean fZielsprGefr = true; //fZielsprGefr == true bedeutet, dass der Nutzer die Vokabelbedeutung in der Zielsprache eingeben muss
 
     //Konstruktor erstellen
     public GUI() {
@@ -176,7 +177,7 @@ public class GUI extends JFrame {
                 if (alleLektionen[0] != null) {
                     aktLektion = alleLektionen[0];
                     abfrageIndex = 0;
-                    alleLektionen[0].abfrageZ(pGui, 0);
+                    alleLektionen[0].abfrage(pGui, 0);
                     eingabefeld.setText("");
                 }
             }
@@ -190,7 +191,7 @@ public class GUI extends JFrame {
                 if (alleLektionen[1] != null) {
                     aktLektion = alleLektionen[1];
                     abfrageIndex = 0;
-                    alleLektionen[1].abfrageZ(pGui, 0);
+                    alleLektionen[1].abfrage(pGui, 0);
                     eingabefeld.setText("");
                 }
             }
@@ -204,7 +205,7 @@ public class GUI extends JFrame {
                 if (alleLektionen[2] != null) {
                     aktLektion = alleLektionen[2];
                     abfrageIndex = 0;
-                    alleLektionen[2].abfrageZ(pGui, 0);
+                    alleLektionen[2].abfrage(pGui, 0);
                     eingabefeld.setText("");
                 }
             }
@@ -218,7 +219,7 @@ public class GUI extends JFrame {
                 if (alleLektionen[3] != null) {
                     aktLektion = alleLektionen[3];
                     abfrageIndex = 0;
-                    alleLektionen[3].abfrageZ(pGui, 0);
+                    alleLektionen[3].abfrage(pGui, 0);
                     eingabefeld.setText("");
                 }
             }
@@ -232,7 +233,7 @@ public class GUI extends JFrame {
                 if (alleLektionen[4] != null) {
                     aktLektion = alleLektionen[4];
                     abfrageIndex = 0;
-                    alleLektionen[4].abfrageZ(pGui, 0);
+                    alleLektionen[4].abfrage(pGui, 0);
                     eingabefeld.setText("");
                 }
             }
@@ -272,14 +273,37 @@ public class GUI extends JFrame {
         JPanel richtungpanel = new JPanel();
         richtungpanel.setLayout(new BoxLayout(richtungpanel, BoxLayout.Y_AXIS));
         ButtonGroup richtungBG = new ButtonGroup();
-        JRadioButton zielsprgefr = new JRadioButton("Zielsprache gefragt");
-        zielsprgefr.setFont(new Font("Dialog", 0, 20));
-        richtungBG.add(zielsprgefr);
-        richtungpanel.add(zielsprgefr);
-        JRadioButton ausgsprgefr = new JRadioButton("Ausgangssprache gefragt");
-        ausgsprgefr.setFont(new Font("Dialog", 0, 20));
-        richtungBG.add(ausgsprgefr);
-        richtungpanel.add(ausgsprgefr);
+
+        JRadioButton bZielsprGefr = new JRadioButton("Zielsprache gefragt");
+        bZielsprGefr.setFont(new Font("Dialog", 0, 20));
+        bZielsprGefr.setSelected(true); //damit am Anfang auch ausgewählt, da fZielsprGefr bei Programmstart auf true steht, dementsprechend auch die Anzeige
+        bZielsprGefr.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fZielsprGefr = true;
+                if(aktKarte != null){
+                    setAbfrage(aktKarte.getVokA());
+                    kartenPanel.updateUI();
+                }
+            }
+        });
+        richtungBG.add(bZielsprGefr);
+        richtungpanel.add(bZielsprGefr);
+
+        JRadioButton bAusgsprGefr = new JRadioButton("Ausgangssprache gefragt");
+        bAusgsprGefr.setFont(new Font("Dialog", 0, 20));
+        bAusgsprGefr.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fZielsprGefr = false;
+                if(aktKarte != null){
+                    setAbfrage(aktKarte.getVokZ());
+                    kartenPanel.updateUI();
+                }
+            }
+        });
+        richtungBG.add(bAusgsprGefr);
+        richtungpanel.add(bAusgsprGefr);
 
         JPanel scorepanel = new JPanel();
         JLabel scorelabel = new JLabel("Score: 13/20 gelernt; noch: 7"); //hier entsprechend Verbindung zu dem errechneten Score aus Code. Ggf. für Zahlen halt Variablne einsetzen, sodass es veränderkich wird?
@@ -317,11 +341,11 @@ public class GUI extends JFrame {
                 useTick();
                 eingabefeld.setText("");
                 abfrageIndex++;
-                if (abfrageIndex < aktLektion.getAnzahlLek()) {
-                    aktLektion.abfrageZ(pGui, abfrageIndex);
-                }else{//fängt nach letzter Vokabel wieder bei erster an
+                if (abfrageIndex < aktLektion.getAnzahlLek()) {//ruft Abfrage für nächste Vokabel in der Liste auf
+                    aktLektion.abfrage(pGui, abfrageIndex);
+                } else {//fängt nach letzter Vokabel wieder bei erster an
                     abfrageIndex = 0;
-                    aktLektion.abfrageZ(pGui, abfrageIndex);
+                    aktLektion.abfrage(pGui, abfrageIndex);
                 }
             }
         });
@@ -376,15 +400,28 @@ public class GUI extends JFrame {
     }
 
     public void useTick() {
-        if (antwort.equals(aktKarte.getVokZ())) {
-            if (aktKarte.getStatus() != 3) {
-                int stat = aktKarte.getStatus() + 1;
-                aktKarte.setStatus(stat);
+        if (fZielsprGefr == true) {//gucken, in welchem Modus gerade abgefragt wird, hier muss Zielsprache eingegeben werden
+            if (antwort.equals(aktKarte.getVokZ())) {//prüfen, ob Eingabe mit gespeicherter Übersetzung übereinstimmt
+                if (aktKarte.getStatus() != 3) {//prüfen, ob Lampe schon auf grün steht; wenn nicht, um eine Stufe erhöhen; wenn ja, passiert (erstmal) nichts
+                    int stat = aktKarte.getStatus() + 1;
+                    aktKarte.setStatus(stat);
+                    updateStatusPanel(aktKarte.getStatus());
+                }
+            } else {//wenn falsche Antwort gegeben, wird Lampe auf rot gesetzt
+                aktKarte.setStatus(0);
                 updateStatusPanel(aktKarte.getStatus());
             }
-        } else {
-            aktKarte.setStatus(0);
-            updateStatusPanel(aktKarte.getStatus());
+        } else {//anderer Abfragemodus, hier muss Ausgangssprache eingegeben werden
+            if (antwort.equals(aktKarte.getVokA())) {//prüfen, ob Eingabe mit gespeicherter Übersetzung übereinstimmt
+                if (aktKarte.getStatus() != 3) {//prüfen, ob Lampe schon auf grün steht; wenn nicht, um eine Stufe erhöhen; wenn ja, passiert (erstmal) nichts
+                    int stat = aktKarte.getStatus() + 1;
+                    aktKarte.setStatus(stat);
+                    updateStatusPanel(aktKarte.getStatus());
+                }
+            } else {//wenn falsche Antwort gegeben, wird Lampe auf rot gesetzt
+                aktKarte.setStatus(0);
+                updateStatusPanel(aktKarte.getStatus());
+            }
         }
 
     }

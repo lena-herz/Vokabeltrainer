@@ -1,2 +1,21 @@
-Einundzwanzig;vingt-et-un;21;false;0;false;
+﻿einundzwanzig;vingt-et-un;21;false;0;false;
+zweiundzwanzig;vingt-deux;22;false;0;false;
+dreissig;trente;30;false;0;false;
+einunddreissig;trente et un;3;false;0;false;
+zweiundreissig;trente-deux;32;false;0;false;
+vierzig;quarante;40;false;0;false;
+fuenfzig;cinquante;50;false;0;false;
+sechzig;soixante;60;false;0;false;
+siebzig;soixante-dix;70;false;0;false;
+einundsiebzig;soixante-onze;71;false;0;false;
+zweiundsiebzig;soixante-douze;72;false;0;false;
+siebenundsiebzig;soixante-dix-sept;77;false;0;false;
+achtzig;quatre-vingt;80;false;0;false;
+einundachtzig;quatre-vingt-un;81;false;0;false;
+neunzig;quatre-vingt-dix;90;false;0;false;
+einundneunzig;quatre-vingt-onze;91;false;0;false;
+siebenundneunzig;quatre-vingt-dix-sept;97;false;0;false;
+einhundert;cent;100;false;0;false;
+zweihundert;deux cents;200;false;0;false;
+eintausend;mille;1000;false;0;false;
 endOfList
