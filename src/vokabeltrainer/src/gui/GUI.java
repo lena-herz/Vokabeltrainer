@@ -47,9 +47,6 @@ import javax.swing.JToggleButton;
 import vokabeltrainer.Karteikarte;
 import vokabeltrainer.Kurs;
 import vokabeltrainer.Lektion;
-import vokabeltrainer.SystemInReader;
-import static vokabeltrainer.Vokabeltrainer.alleLektionen;
-import static vokabeltrainer.Vokabeltrainer.kursListe;
 
 /**
  *
@@ -155,7 +152,7 @@ public class GUI extends JFrame {
         anzeigeHS.setFont(new Font("Dialog", 0, 30));
         kartenPanel.add(anzeigeHS);
         anzeigeHS.setOpaque(true);
-        anzeigeHS.setSize(800, 60);
+        anzeigeHS.setSize(800, 100);
         anzeigeHS.setLocation(50, 500);
 
         // Legt eine weiße einfache Linie als Border um das JPanel
@@ -174,7 +171,7 @@ public class GUI extends JFrame {
     }
 
     public void showHS(String pHS) {
-        anzeigeHS.setText(pHS);
+        anzeigeHS.setText("<html>" + pHS + "</html>");
         kartenPanel.updateUI();
     }
 
@@ -342,7 +339,12 @@ public class GUI extends JFrame {
                 //angezeigt wird, muss dieser Fall hier nicht mehr berücksichtigt werden
                 int statZ = aktKarte.getStatus() + 1;
                 aktKarte.setStatus(statZ);
-                updateStatusPanel(aktKarte.getStatus());
+                new java.util.Timer().schedule(new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        updateStatusPanel(aktKarte.getStatus());
+                    }
+                }, 10000);                
                 updateScore();
             } else {//wenn falsche Antwort gegeben, wird Lampe auf rot gesetzt
                 aktKarte.setStatus(0);
@@ -393,6 +395,7 @@ public class GUI extends JFrame {
                 statusPanel.updateUI();
                 break;
         }
+        statusPanel.updateUI();
     }
 
     public void updateScore() {
