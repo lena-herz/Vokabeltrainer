@@ -39,9 +39,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     private BufferedWriter lektOut;
     private BufferedReader lektIn;
 
-    public Lektion(String pMeinKurs, GUI pGui) { //Konstruktor für wenn eine Lektion neu erstellt wird
-        System.out.println("Lektionsname?");
-        String pName = SystemInReader.readString();
+    public Lektion(String pName, String pMeinKurs, GUI pGui) { //Konstruktor für wenn eine Lektion neu erstellt wird
         lName = pName;
         meinKurs = pMeinKurs;
         gui = pGui;
@@ -50,15 +48,12 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         //sollen, die zu dieser Lektion gehören 
         lektFile = new File("Vokabellisten\\" + meinKurs + "_" + lName + ".csv");
 
-        try {
-            //hier kein Problem mit Writer und close(), weil zu einer bestehenden Lektion nicht nachträglich etwas hinzugefügt werden soll
+        try {            
             lektOut = new BufferedWriter(new FileWriter(lektFile)); //übergibt dem Writer jetzt die Datei, auf die er schreiben soll
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen der Lektion.");
             //System.out.println(e.getMessage());
         }
-
-        vokListe.add(new Karteikarte(this));
         listeSpeichern();
 
         try {
@@ -205,6 +200,11 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
             }
         }
         return anzahlGel;
+    }
+    
+    public void addVokabel(String pVokA, String pVokZ, String pHS){
+        vokListe.add(new Karteikarte(this, pVokA, pVokZ, pHS));
+        listeSpeichern();
     }
 
 }

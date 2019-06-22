@@ -35,7 +35,7 @@ public class Kurs {
 
 
     //Konstruktor für wenn ein Kurs neu erstellt wird, also wenn bei einer neuen Lektion ein Kursname eingegeben wird, der noch nicht existiert
-    public Kurs(String pName, GUI pGui) {
+    public Kurs(String pName, GUI pGui, String pLektName) {
         kName = pName;
         gui = pGui;
 
@@ -50,8 +50,10 @@ public class Kurs {
             //System.out.println(e.getMessage());
         }
 
-        lekListe.add(new Lektion(kName, gui)); //wenn ich einen Kurs erstelle, soll auch direkt eine Lektion hinzugefügt werden, sonst brauch ich den Kurs nicht
+        Lektion neueLektion = new Lektion(pLektName, kName, gui);
+        lekListe.add(neueLektion);
         listeSpeichern();
+        gui.aktLektion = neueLektion;
 
         try {
             //Reader hier, weil nur einmal benutzt wird
@@ -132,9 +134,11 @@ public class Kurs {
     }
 
     //brauchten wir mal, jetzt nicht mehr, lassen wir aber erstmal drin
-    public void addLektion() {
-        lekListe.add(new Lektion(kName, gui));
+    public void addLektion(String pLektName) {
+        Lektion neueLekt = new Lektion(pLektName, kName, gui);
+        lekListe.add(neueLekt);
         listeSpeichern();
+        gui.aktLektion = neueLekt;
     }
 
     public Lektion getLektionAt(int pIndex) {

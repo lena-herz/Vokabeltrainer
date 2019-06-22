@@ -20,10 +20,10 @@ public class Karteikarte {
     private Lektion meineLektion;
 
 
-    public Karteikarte(Lektion pMeineLektion) {
-        setVokA();
-        setVokZ();
-        menuHS();        
+    public Karteikarte(Lektion pMeineLektion, String pVokA, String pVokZ, String pHS) {
+        vokA = pVokA;
+        vokZ = pVokZ;
+        hilfssatz = pHS;               
         gelernt = false;
         status = 0;
         favorit = false;
@@ -39,39 +39,13 @@ public class Karteikarte {
         favorit = pFav;
         meineLektion = pMeineLektion;
     }
-    
-    private void setVokA(){
-        System.out.println("Vokabel Ausgangssprache?");
-        String pVokA = SystemInReader.readString();
-        this.vokA = pVokA;
-    }
 
     public String getVokA() {
         return vokA;
     }
-    
-    private void setVokZ(){
-        System.out.println("Vokabel Zielsprache?");
-        String pVokZ = SystemInReader.readString();
-        vokZ = pVokZ;
-    }
 
     public String getVokZ() {
         return vokZ;
-    }
-    
-    private void menuHS() {
-        System.out.println("Hilfssatz hinzufügen?");
-        System.out.println("1: ja");
-        System.out.println("2: nein");
-        int eingHS = SystemInReader.readInt();
-        if (eingHS == 1) {
-            System.out.println("Hilfssatz?");
-            String pHS = SystemInReader.readString();
-            this.hilfssatz = pHS;
-        }else if (eingHS == 2){
-            this.hilfssatz = "Es wurde kein Hilfssatz eingegeben.";
-        }
     }
 
     public String getHilfssatz() {

@@ -15,6 +15,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vokabeltrainer.src.gui.GUI;
 
 public class Vokabeltrainer {
@@ -40,6 +42,7 @@ public class Vokabeltrainer {
             trainOut = new BufferedWriter(new FileWriter("Kursliste.csv"));
             listeSpeichern();
             
+            gui.setAlleKurse(kursListe);
             gui.menuPanel = gui.updateMenuPanel(gui, alleLektionen());
             gui.menuPanel.updateUI();            
             
@@ -89,7 +92,7 @@ public class Vokabeltrainer {
                     boolean vorhanden = false;
                     for (Kurs kurs : kursListe) { //wenn schon ein Kurs mit dem eingegebenen Namen existiert, soll die Lektion zu diesem Kur hinzugefügt werden
                         if (kurs.getName().equals(eingKursname)) {
-                            kurs.addLektion();
+                            //kurs.addLektion();
                             vorhanden = true;
                         }
                     }
@@ -97,7 +100,7 @@ public class Vokabeltrainer {
                     //wenn das Programm hier angekommen ist und vorhanden nicht auf true gestellt wurde, existiert noch kein Kurs mit dem eingegebenen Namen 
                     //also wird ein neuer erstellt und dort eine Lektion hinzugefügt
                     if (vorhanden == false) {
-                        kursListe.add(new Kurs(eingKursname, pGui));
+                        //kursListe.add(new Kurs(eingKursname, pGui));
                     }
 
                     //hier gehts direkt wieder ins Hauptmenü
@@ -115,6 +118,7 @@ public class Vokabeltrainer {
 
     public static void listeSpeichern() { //überschreibt vorhandene Datei "Kursliste.csv" mit allen Elementen, die jetzt in der kursListe sind        
         try {
+            trainOut = new BufferedWriter(new FileWriter("Kursliste.csv"));
             for (Kurs kurs : kursListe) {
                 trainOut.write(kurs.getName() + ";" + "Lektionslisten\\" + kurs.getName() + ".csv" + ";");
                 trainOut.newLine();
@@ -122,10 +126,10 @@ public class Vokabeltrainer {
             trainOut.write("endOfList");
             trainOut.close();
         } catch (IOException e) {
-            System.out.println("Fehler beim Speichern der Kursliste.");
+            System.out.println("Fehler beim Speichern der Kursliste (intern).");
             //System.out.println(e.getMessage());
         }
-    }
+    }    
 
     //liest Zeile für Zeile die Datei "Kursliste.csv" ein, teilt am ";" und speichert entsprechend Kursnamen und Dateinamen der Lektionsliste in der kursListe ab
     //Problem mit Umlauten und wahrscheinlich auch nicht-lateinischen Schriftsätzen
