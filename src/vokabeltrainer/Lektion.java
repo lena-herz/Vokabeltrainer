@@ -43,6 +43,8 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         lName = pName;
         meinKurs = pMeinKurs;
         gui = pGui;
+        gui.lektButtonErstellen(this, gui);
+        gui.menuPanel.updateUI();
 
         //erstellt im Ordner "Vokabellisten" eine csv-Datei, die nach dem Lektionsnamen benannt wird und in der die Inhalte aller Karteikarten gespeichert werden 
         //sollen, die zu dieser Lektion gehören 
