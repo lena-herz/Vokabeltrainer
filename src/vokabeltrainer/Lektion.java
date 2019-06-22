@@ -11,9 +11,13 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.text.*;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,7 +36,6 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     private File lektFile;
     private String meinKurs;
     private GUI gui;
-    private String antwort;
 
     //erstellt schonmal den Writer, damit in mehreren Methodenabschnitten aufrufbar unabhängig von Schleifen etc.,
     //aber übergibt noch keine Datei, weil noch keine definiert
@@ -50,8 +53,8 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         //sollen, die zu dieser Lektion gehören 
         lektFile = new File("Vokabellisten\\" + meinKurs + "_" + lName + ".csv");
 
-        try {            
-            lektOut = new BufferedWriter(new FileWriter(lektFile)); //übergibt dem Writer jetzt die Datei, auf die er schreiben soll
+        try {
+            lektOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(lektFile),"UTF-8")); //übergibt dem Writer jetzt die Datei, auf die er schreiben soll
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen der Lektion.");
             //System.out.println(e.getMessage());
@@ -59,7 +62,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         listeSpeichern();
 
         try {
-            lektIn = new BufferedReader(new FileReader(lektFile));
+            lektIn = new BufferedReader(new InputStreamReader(new FileInputStream(lektFile),"UTF-8"));
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen der Lektion.");
             //System.out.println(e.getMessage());
@@ -73,7 +76,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         meinKurs = pMeinKurs;
         lektFile = new File(pFile);
         try {
-            lektIn = new BufferedReader(new FileReader(lektFile));
+            lektIn = new BufferedReader(new InputStreamReader(new FileInputStream(lektFile),"UTF-8"));
             listeEinlesen();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileReader).");
@@ -81,7 +84,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         }
 
         try {
-            lektOut = new BufferedWriter(new FileWriter(lektFile));
+            lektOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(lektFile),"UTF-8"));
             listeSpeichern();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileWriter).");
@@ -95,7 +98,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
     //wieder mitgeschrieben werden.
     public void listeSpeichern() {
         try {
-            lektOut = new BufferedWriter(new FileWriter(lektFile));
+            lektOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(lektFile),"UTF-8"));
             for (Karteikarte krt : vokListe) {
                 lektOut.write(krt.getVokA() + ";" + krt.getVokZ() + ";" + krt.getHilfssatz() + ";" + krt.getGelernt() + ";" + krt.getStatus() + ";" + krt.getFavorit() + ";");
                 lektOut.newLine();
@@ -183,10 +186,6 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
 
     public String getMeinKurs() {
         return meinKurs;
-    }
-
-    public void setAntwort(String pAntwort) {
-        antwort = pAntwort;
     }
 
     public int getAnzahlVok() {

@@ -11,9 +11,13 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.text.*;
 import vokabeltrainer.src.gui.GUI;
 
@@ -44,7 +48,7 @@ public class Kurs {
         kursFile = new File("Lektionslisten\\" + kName + ".csv");
 
         try {
-            kursOut = new BufferedWriter(new FileWriter(kursFile));
+            kursOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(kursFile),"UTF-8"));
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen des Kurses (FileWriter).");
             //System.out.println(e.getMessage());
@@ -57,7 +61,7 @@ public class Kurs {
 
         try {
             //Reader hier, weil nur einmal benutzt wird
-            kursIn = new BufferedReader(new FileReader(kursFile));
+            kursIn = new BufferedReader(new InputStreamReader(new FileInputStream(kursFile),"UTF-8"));
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen des Kurses (FileReader).");
             //System.out.println(e.getMessage());
@@ -69,7 +73,7 @@ public class Kurs {
         kName = pName;
         kursFile = new File(pFile);
         try {
-            kursIn = new BufferedReader(new FileReader(kursFile));
+            kursIn = new BufferedReader(new InputStreamReader(new FileInputStream(kursFile),"UTF-8"));
             listeEinlesen();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der Lektionsliste (FileReader).");
@@ -86,7 +90,7 @@ public class Kurs {
     private void listeSpeichern() {
         try {
             //Writer hier, damit bei jedem Speichern ein neuer Stream geöffnet wird; gibt sonst Probleme mit dem close()
-            kursOut = new BufferedWriter(new FileWriter(kursFile));
+            kursOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(kursFile),"UTF-8"));
             for (Lektion lek : lekListe) {
                 kursOut.write(lek.getName() + ";" + lek.getVollGelernt() + ";" + lek.getMeinKurs() + ";" + "Vokabellisten\\" + lek.getMeinKurs() + "_" + lek.getName() + ".csv" + ";");
                 kursOut.newLine();

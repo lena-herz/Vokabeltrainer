@@ -1,14 +1,14 @@
 ﻿der Rock;la falda;Carla le gusta mi nueva falda.;false;0;false;
 die Jacke;la chaqueta;Me visto una chaqueta porque es lluvioso.;false;0;false;
-der Hut;el sombrero;El sombrero protege me contra la luz.;false;0;false;
+der Hut;el sombrero;El sombrero protege me contra el sól.;false;0;false;
 das Hemd;la camisa;Mi jefe lleva puesta una camisa.;false;0;false;
 das T-Shirt;la camiseta;Lea lleva puesta una camiseta de colores.;false;0;false;
-die Handtasche;el bolso;En mi bolso hay muchas cosas.;false;0;false;
+die Handtasche;el bolso;En mi bolso hay muchas cosas que yo necesito.;false;0;false;
 die Stiefel;las botas;Las botas son hasta la rodilla.;false;0;false;
-die Muetze;la gorra;Me visto una gorra porque es invierno.;false;0;false;
+die Mütze;la gorra;Me visto una gorra porque es invierno.;false;0;false;
 die Hose;los pantalones;Tengo un agujero en los pantalones.;false;0;false;
-der Pullover;la sudadera;La sudadera caliente Laura.;false;0;false;
-das Taschengeld;la paga;Tengo paga de tres euros.;false;0;false;
+der Pullover;la sudadera;La sudadera está rescando.;false;0;false;
+das Taschengeld;la paga;Tengo paga á tres euros.;false;0;false;
 mit der Mode gehen;ir a la moda;Carla siempre ir a la moda porque tiene estilo.;false;0;false;
 einkaufen gehen;ir de tiendas;Mi madre y yo vamos de tiendas para comprar cosas.;false;0;false;
 der Stil;el estilo;Me gusta el estilo de Carla.;false;0;false;
@@ -16,6 +16,6 @@ der Kunde/die Kundin;el consumidor;En la tienda yo soy un consumidor.;false;0;fa
 das Geld;el dinero;No tengo dinero para comprar una cosa.;false;0;false;
 die Kleidung;la ropa;Sin ropa estoy desnudo.;false;0;false;
 kaufen;comprar;Laura compra muchas cosas en el supermercado.;false;0;false;
-Markenkleidung;ropa de marca;No necesito ropa de marca.;false;0;false;
+Markenkleidung;ropa de marca;No necesito ropa de marca porque soy más humilde.;false;0;false;
 sich ankleiden;vestirse;Me visto ropa de marca.;false;0;false;
 endOfList
