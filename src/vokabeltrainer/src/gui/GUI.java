@@ -39,6 +39,7 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
@@ -64,12 +65,6 @@ public class GUI extends JFrame {
     public JLabel vokAbfrage;
     public JLabel anzeigeLoesung; //hier soll korrekte Übersetzung angezeigt werden, wenn auf Kreuz geklickt wird
     public JLabel anzeigeHS; //hier soll Hilfssatz angezeigt werden, wenn auf Spreechblase geklickt wird
-    public Lektion[] alleLektionen;
-    public JButton button0;
-    public JButton button1;
-    public JButton button2;
-    public JButton button3;
-    public JButton button4;
     public JTextArea eingabefeld;
     public JButton kreuz;
     public JButton tick;
@@ -110,143 +105,31 @@ public class GUI extends JFrame {
         menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.Y_AXIS));
 //        //Farbe festlegen
         menupanel.setBackground(new java.awt.Color(0, 145, 153));
-
-        button0 = new JButton();
-        button0.setFont(new Font("Dialog", 0, 20));
-
-        button1 = new JButton();
-        button1.setFont(new Font("Dialog", 0, 20));
-
-        button2 = new JButton();
-        button2.setFont(new Font("Dialog", 0, 20));
-
-        button3 = new JButton();
-        button3.setFont(new Font("Dialog", 0, 20));
-
-        button4 = new JButton();
-        button4.setFont(new Font("Dialog", 0, 20));
-
-        //Die Buttons dem Panel hinzufügen
-        menupanel.add(button0);
-        menupanel.add(button1);
-        menupanel.add(button2);
-        menupanel.add(button3);
-        menupanel.add(button4);
         return menupanel;
     }
 
-    //hier werden die leeren Buttons dann entfernt und durch die neuen mit richtiger Aufschrift ersetzt
-    public JPanel updateMenuPanel(GUI pGui) {
+    public JPanel updateMenuPanel(GUI pGui, ArrayList<Lektion> pAlleLektionen) {
         //Buttons erstellen
-        menuPanel.remove(button0);
-        menuPanel.remove(button1);
-        menuPanel.remove(button2);
-        menuPanel.remove(button3);
-        menuPanel.remove(button4);
-
-        //hier jeweils im ActionListener die Lektion zuweisen, die in lekAuflisten() an entsprechender Stelle steht
-        Lektion lektion0 = alleLektionen[0];
-        button0 = new JButton(lektion0.getMeinKurs() + " - " + lektion0.getName());
-        button0.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (alleLektionen[0] != null) {
-                    aktLektion = alleLektionen[0];
+        for (Lektion lektion : pAlleLektionen) {
+            JButton button = new JButton(lektion.getMeinKurs() + " - " + lektion.getName());
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    aktLektion = lektion;
                     abfrageIndex = 0;
                     updateScore();
-                    alleLektionen[0].abfrage(pGui, abfrageIndex);
-                    eingabefeld.setText("");
-                    if (anzeigeLoesung.getText() != null) {
-                        anzeigeLoesung.setText("");
-                    }                    
-                    kartenPanel.updateUI();
-                }
-            }
-        });
-        button0.setFont(new Font("Dialog", 0, 20));
-
-        button1 = new JButton(alleLektionen[1].getMeinKurs() + " - " + alleLektionen[1].getName());
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (alleLektionen[1] != null) {
-                    aktLektion = alleLektionen[1];
-                    abfrageIndex = 0;
-                    updateScore();
-                    alleLektionen[1].abfrage(pGui, abfrageIndex);
+                    aktLektion.abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
                     if (anzeigeLoesung.getText() != null) {
                         anzeigeLoesung.setText("");
                     }
                     kartenPanel.updateUI();
                 }
-            }
-        });
-        button1.setFont(new Font("Dialog", 0, 20));
+            });
+            button.setFont(new Font("Dialog", 0, 20));
+            menuPanel.add(button);
+        }
 
-        button2 = new JButton(alleLektionen[2].getMeinKurs() + " - " + alleLektionen[2].getName());
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (alleLektionen[2] != null) {
-                    aktLektion = alleLektionen[2];
-                    abfrageIndex = 0;
-                    updateScore();
-                    alleLektionen[2].abfrage(pGui, abfrageIndex);
-                    eingabefeld.setText("");
-                    if (anzeigeLoesung.getText() != null) {
-                        anzeigeLoesung.setText("");
-                    }
-                    kartenPanel.updateUI();
-                }
-            }
-        });
-        button2.setFont(new Font("Dialog", 0, 20));
-
-        button3 = new JButton(alleLektionen[3].getMeinKurs() + " - " + alleLektionen[3].getName());
-        button3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (alleLektionen[3] != null) {
-                    aktLektion = alleLektionen[3];
-                    abfrageIndex = 0;
-                    updateScore();
-                    alleLektionen[3].abfrage(pGui, abfrageIndex);
-                    eingabefeld.setText("");
-                    if (anzeigeLoesung.getText() != null) {
-                        anzeigeLoesung.setText("");
-                    }
-                    kartenPanel.updateUI();
-                }
-            }
-        });
-        button3.setFont(new Font("Dialog", 0, 20));
-
-        button4 = new JButton(alleLektionen[4].getMeinKurs() + " - " + alleLektionen[4].getName());
-        button4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (alleLektionen[4] != null) {
-                    aktLektion = alleLektionen[4];
-                    abfrageIndex = 0;
-                    updateScore();
-                    alleLektionen[4].abfrage(pGui, abfrageIndex);
-                    eingabefeld.setText("");
-                    if (anzeigeLoesung.getText() != null) {
-                        anzeigeLoesung.setText("");
-                    }
-                    kartenPanel.updateUI();
-                }
-            }
-        });
-        button4.setFont(new Font("Dialog", 0, 20));
-
-        //Die Buttons dem Panel hinzufügen
-        menuPanel.add(button0);
-        menuPanel.add(button1);
-        menuPanel.add(button2);
-        menuPanel.add(button3);
-        menuPanel.add(button4);
         return menuPanel;
     }
 
@@ -380,29 +263,29 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (aktKarte != null) {
                     if (fZielsprGefr == true) {
-                        showLoesung(aktKarte.getVokZ());                        
+                        showLoesung(aktKarte.getVokZ());
                     } else {
                         showLoesung(aktKarte.getVokA());
                     }
                     weiter = new JButton("weiter");
-                        weiter.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                aktKarte.setStatus(0);
-                                eingabefeld.setText("");
-                                anzeigeLoesung.setText("");
-                                abfrageIndex++;
-                                if (abfrageIndex < aktLektion.getAnzahlVok()) {//ruft Abfrage für nächste Vokabel in der Liste auf
-                                    aktLektion.abfrage(pGui, abfrageIndex);
-                                } else {//fängt nach letzter Vokabel wieder bei erster an
-                                    abfrageIndex = 0;
-                                    aktLektion.abfrage(pGui, abfrageIndex);
-                                }
-                                southPanel.remove(weiter);
-                                southPanel.updateUI();
+                    weiter.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            aktKarte.setStatus(0);
+                            eingabefeld.setText("");
+                            anzeigeLoesung.setText("");
+                            abfrageIndex++;
+                            if (abfrageIndex < aktLektion.getAnzahlVok()) {//ruft Abfrage für nächste Vokabel in der Liste auf
+                                aktLektion.abfrage(pGui, abfrageIndex);
+                            } else {//fängt nach letzter Vokabel wieder bei erster an
+                                abfrageIndex = 0;
+                                aktLektion.abfrage(pGui, abfrageIndex);
                             }
-                        });
-                        southPanel.add(weiter);
+                            southPanel.remove(weiter);
+                            southPanel.updateUI();
+                        }
+                    });
+                    southPanel.add(weiter);
                 }
             }
         });
@@ -425,30 +308,8 @@ public class GUI extends JFrame {
         ImageIcon statusausgeschaltet = new ImageIcon(new ImageIcon("./Lampe_ausgeschaltet.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         statuslabel.setIcon(statusausgeschaltet);
 
-//        JLabel statuslabelrot = new JLabel();
-//        ImageIcon statusrot = new ImageIcon(new ImageIcon("./Lampe_rot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-//        statuslabelrot.setIcon(statusrot);
-//
-//        JLabel statuslabelgelb = new JLabel();
-//        ImageIcon statusgelb = new ImageIcon(new ImageIcon("./Lampe_gelb.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-//        statuslabelgelb.setIcon(statusgelb);
-//
-//        JLabel statuslabelgruen = new JLabel();
-//        ImageIcon statusgruen = new ImageIcon(new ImageIcon("./Lampe_gruen.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-//        statuslabelgruen.setIcon(statusgruen);
-//
-//        JLabel statLabAus = new JLabel();
-//        ImageIcon statusausgeschaltet = new ImageIcon(new ImageIcon("./Lampe_ausgeschaltet.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-//        statLabAus.setIcon(statusausgeschaltet);
-//        statuspanel.add(statuslabelrot);
-//        statuspanel.add(statuslabelgelb);
-//        statuspanel.add(statuslabelgruen);
         statuspanel.add(statuslabel);
         return statuspanel;
-    }
-
-    public void setAlleLektionen(Lektion[] pArray) {
-        alleLektionen = pArray;
     }
 
     public void useTick() {//hier findet die eigentliche Überprüfung der Eingabe statt

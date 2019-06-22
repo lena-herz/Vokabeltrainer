@@ -40,11 +40,9 @@ public class Vokabeltrainer {
             trainOut = new BufferedWriter(new FileWriter("Kursliste.csv"));
             listeSpeichern();
             
-            gui.setAlleLektionen(alleLektionen());
-            gui.menuPanel = gui.updateMenuPanel(gui);
+            gui.menuPanel = gui.updateMenuPanel(gui, alleLektionen());
             gui.menuPanel.updateUI();            
             
-//            printMenu(gui);
         } catch (IOException e) { //hier fangen wir Fehler auf, die ganz zum Schluss noch übrig sind und sonst nirgendwo behandelt werden
             System.out.println("Upsi. Irgendwo ist ein Input/Output schief gelaufen, aber ich weiß nicht genau wo. Sorry... ");
             //System.out.println(e.getMessage());
@@ -157,19 +155,13 @@ public class Vokabeltrainer {
 //        return aufgelisteteLek;
 //    }
     
-    public static Lektion[] alleLektionen(){        
-        int anzahlLek = 0;
-        for (Kurs kurs : kursListe) {
-            anzahlLek = anzahlLek + kurs.getAnzahlLek();
-        }
-        Lektion[] alleLek = new Lektion[anzahlLek];
-        int index = 0;
-        for (Kurs kurs : kursListe) {
+    public static ArrayList<Lektion> alleLektionen(){        
+        ArrayList<Lektion> alleLek = new ArrayList<>();
+        kursListe.forEach((kurs) -> {
             for (int i = 0; i < kurs.getAnzahlLek(); i++) {
-                alleLek[index] = kurs.getLektionAt(i);
-                index++;
+                alleLek.add(kurs.getLektionAt(i));
             }
-        }
+        });
         return alleLek;
     }
 
