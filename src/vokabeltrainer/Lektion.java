@@ -27,7 +27,6 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
 
     private final String lName;
     private boolean vollGelernt;
-    private int score; //score gibt an, wie viele Vokabeln bereits "gelernt" sind, also auf der grünen Lampe stehen
     private Karteikarte aktKarte;
     private ArrayList<Karteikarte> vokListe = new ArrayList<>();
     private File lektFile;
@@ -70,10 +69,9 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         }
     }
 
-    public Lektion(String pName, int pScore, boolean pVollGel, String pMeinKurs, String pFile, GUI pGui) { //Konstruktor für wenn die gespeicherten Lektionen eingelesen werden
+    public Lektion(String pName, boolean pVollGel, String pMeinKurs, String pFile, GUI pGui) { //Konstruktor für wenn die gespeicherten Lektionen eingelesen werden
         gui = pGui;
         lName = pName;
-        score = pScore;
         vollGelernt = pVollGel;
         meinKurs = pMeinKurs;
         lektFile = new File(pFile);
@@ -172,14 +170,6 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
 
     public boolean getVollGelernt() {
         return vollGelernt;
-    }
-
-    public void setScore(int pScore) {//brauchen wir glaube ich nicht, weil Score in updateScore direkt aus aktueller Liste zusammengerechnet wird
-        score = pScore;
-    }
-
-    public int getScore() {
-        return score;
     }
 
     public void setAktKarte(Karteikarte pAktuell) {

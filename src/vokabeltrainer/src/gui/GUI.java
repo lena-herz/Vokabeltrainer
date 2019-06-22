@@ -97,13 +97,13 @@ public class GUI extends JFrame {
 
     }
 
-    //muss für Konstruktor erstmal leere Buttons erstellen, weil das sost mit der Reihenfolge der Übergabewerte beim Aufrufen in main nicht passt, weil die
+    //muss für Konstruktor erstmal leere Buttons erstellen, weil das sonst mit der Reihenfolge der Übergabewerte beim Aufrufen in main nicht passt, weil die
     //Lektionen zu dem Zeitpunkt noch nicht eingelesen sein können
     private JPanel createMenuPanel() {
         JPanel menupanel = new JPanel();
-//        //Layout festlegen
+        //Layout festlegen
         menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.Y_AXIS));
-//        //Farbe festlegen
+        //Farbe festlegen
         menupanel.setBackground(new java.awt.Color(0, 145, 153));
         return menupanel;
     }
@@ -236,8 +236,8 @@ public class GUI extends JFrame {
 
         JPanel checkpanel = new JPanel();
         tick = new JButton();
-        ImageIcon itick = new ImageIcon(new ImageIcon("./Tick.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-        tick.setIcon(itick);
+        ImageIcon iTick = new ImageIcon(new ImageIcon("./Tick.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        tick.setIcon(iTick);
         tick.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -256,8 +256,8 @@ public class GUI extends JFrame {
         checkpanel.add(tick);
 
         kreuz = new JButton();
-        ImageIcon ikreuz = new ImageIcon(new ImageIcon("./Kreuz.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-        kreuz.setIcon(ikreuz);
+        ImageIcon iKreuz = new ImageIcon(new ImageIcon("./Kreuz.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        kreuz.setIcon(iKreuz);
         kreuz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -292,11 +292,17 @@ public class GUI extends JFrame {
         checkpanel.add(kreuz);
 
         hilfssatz = new JButton();
-        ImageIcon ihilfssatz = new ImageIcon(new ImageIcon("./Message.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-        hilfssatz.setIcon(ihilfssatz);
+        ImageIcon iHilfssatz = new ImageIcon(new ImageIcon("./Message.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        hilfssatz.setIcon(iHilfssatz);
+        hilfssatz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
         checkpanel.add(hilfssatz);
+        
         southPanel.add(checkpanel);
-
         return southPanel;
     }
 
