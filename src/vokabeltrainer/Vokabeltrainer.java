@@ -74,7 +74,6 @@ public class Vokabeltrainer {
     }    
 
     //liest Zeile für Zeile die Datei "Kursliste.csv" ein, teilt am ";" und speichert entsprechend Kursnamen und Dateinamen der Lektionsliste in der kursListe ab
-    //Problem mit Umlauten
     private static void listeEinlesen(GUI pGui) {
         try {
             String zeile = trainIn.readLine();
@@ -85,13 +84,15 @@ public class Vokabeltrainer {
                     zeile = trainIn.readLine();
                 }
             }
-            trainIn.close(); //immer schließen, sonst gehts nicht
+            trainIn.close();
         } catch (IOException e) {
             System.out.println("Fehler beim Einlesen der Kursliste.");
             //System.out.println(e.getMessage());
         }
     }
     
+    //hier werden aus allen Kursen die Lektionen in eine Liste geschrieben, somit sind sie darin dann nach Kurs gruppiert und werden in der Reihenfolge auf
+    //die GUI übergeben und dort als Buttons angezeigt
     public static ArrayList<Lektion> alleLektionen(){        
         ArrayList<Lektion> alleLek = new ArrayList<>();
         kursListe.forEach((kurs) -> {

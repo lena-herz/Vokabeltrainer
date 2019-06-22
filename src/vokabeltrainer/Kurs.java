@@ -43,8 +43,8 @@ public class Kurs {
         kName = pName;
         gui = pGui;
 
-        //erstellt im Ordner "Kurslisten" eine csv-Datei, die nach dem Kursnamen benannt ist und in der die Namen aller Lektionen gespeichert werden 
-        //sollen, die zu diesem Kurs gehören
+        //erstellt im Ordner "Kurslisten" eine csv-Datei, die nach dem Kursnamen benannt ist und in der die Namen aller Lektionen gespeichert werden,
+        //die zu diesem Kurs gehören
         kursFile = new File("Lektionslisten\\" + kName + ".csv");
 
         try {
@@ -57,7 +57,7 @@ public class Kurs {
         Lektion neueLektion = new Lektion(pLektName, kName, gui);
         lekListe.add(neueLektion);
         listeSpeichern();
-        gui.aktLektion = neueLektion;
+        gui.aktLektion = neueLektion; //damit die neu eingegebenen Vokabeln auch in der neu erstellten Lektion gespeichert werden
 
         try {
             //Reader hier, weil nur einmal benutzt wird
