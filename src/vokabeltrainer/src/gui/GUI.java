@@ -62,6 +62,8 @@ public class GUI extends JFrame {
     public JPanel southPanel;
     public JPanel richtungPanel;
     public JLabel vokAbfrage;
+    public JLabel anzeigeLoesung; //hier soll korrekte Übersetzung angezeigt werden, wenn auf Kreuz geklickt wird
+    public JLabel anzeigeHS; //hier soll Hilfssatz angezeigt werden, wenn auf Spreechblase geklickt wird
     public Lektion[] alleLektionen;
     public JButton button0;
     public JButton button1;
@@ -79,6 +81,7 @@ public class GUI extends JFrame {
     public int abfrageIndex;
     public boolean fZielsprGefr = true; //fZielsprGefr == true bedeutet, dass der Nutzer die Vokabelbedeutung in der Zielsprache eingeben muss
     public JLabel scorelabel;
+    public JButton weiter;
 
     //Konstruktor erstellen
     public GUI() {
@@ -134,35 +137,6 @@ public class GUI extends JFrame {
 
     //hier werden die leeren Buttons dann entfernt und durch die neuen mit richtiger Aufschrift ersetzt
     public JPanel updateMenuPanel(GUI pGui) {
-
-//        JPanel menupanel = new JPanel();
-//          //Layout festlegen
-//        menupanel.setLayout(new BoxLayout(menupanel, BoxLayout.Y_AXIS));
-//          //Farbe festlegen
-//        menupanel.setBackground(new java.awt.Color(0, 145, 153));
-//            /*  Die Button-Struktur mal ersetzt durch JComboBoxen. Dort kann man dann aus auklappender Liste auswählen. Aktuell sind die Arrays hier noch händisch eingegeben, 
-//                aber Ziel ist es, dass hier die Lektionsnamen geladen werden und in einer Schleife entstprechend bestimmen, wann eine ComboBox mit Kurs erstellt wird
-//                allerdings müsste, wollte man den Kursnamen mit anzeigen jeweils ein Panel über die CB gelegt werden mit dem entsprechenden Label...
-//                Was ist nun besser? Das mit den Buttons?
-//                Noch eine Alternative wäre es vielleicht mit einem FileChooser zu arbeiten, wo dann die Lektionsliste ausgewählt wird, die direkt geladen wird? (vgl. https://www.java-tutorial.org/jfilechooser.html)*/
-//        // Array für JComboBox
-//        String comboBoxListeEng[] = {"Science and Technology", "Shopping",
-//            "Sustainability", "History of GB", "Thomas Tallis School",
-//            "A day in the city", "Slavery in the US", "Colonism",
-//            "Democracy and Politics"};
-//        String comboBoxListeSpa[] = {"En la tienda", "El mar",
-//            "Las fiestas", "Cristobál Cólon"};
-//        String comboBoxListeFr[] = {"Zahlen bis 20", "Zahlen ab 20"};
-//        
-//        //JComboBox mit den Einträgen erstellen
-//        JComboBox lektionsauswahlEng = new JComboBox(comboBoxListeEng);
-//        JComboBox lektionsauswahlSpa = new JComboBox (comboBoxListeSpa);
-//        JComboBox lektionsauswahlFr = new JComboBox (comboBoxListeFr);
-//        
-//        //JComboBox wird Panel hinzugefügt
-//        menupanel.add(lektionsauswahlEng);
-//        menupanel.add(lektionsauswahlSpa);
-//        menupanel.add(lektionsauswahlFr);
         //Buttons erstellen
         menuPanel.remove(button0);
         menuPanel.remove(button1);
@@ -182,6 +156,10 @@ public class GUI extends JFrame {
                     updateScore();
                     alleLektionen[0].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
+                    if (anzeigeLoesung.getText() != null) {
+                        anzeigeLoesung.setText("");
+                    }                    
+                    kartenPanel.updateUI();
                 }
             }
         });
@@ -197,6 +175,10 @@ public class GUI extends JFrame {
                     updateScore();
                     alleLektionen[1].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
+                    if (anzeigeLoesung.getText() != null) {
+                        anzeigeLoesung.setText("");
+                    }
+                    kartenPanel.updateUI();
                 }
             }
         });
@@ -212,6 +194,10 @@ public class GUI extends JFrame {
                     updateScore();
                     alleLektionen[2].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
+                    if (anzeigeLoesung.getText() != null) {
+                        anzeigeLoesung.setText("");
+                    }
+                    kartenPanel.updateUI();
                 }
             }
         });
@@ -227,6 +213,10 @@ public class GUI extends JFrame {
                     updateScore();
                     alleLektionen[3].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
+                    if (anzeigeLoesung.getText() != null) {
+                        anzeigeLoesung.setText("");
+                    }
+                    kartenPanel.updateUI();
                 }
             }
         });
@@ -242,6 +232,10 @@ public class GUI extends JFrame {
                     updateScore();
                     alleLektionen[4].abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
+                    if (anzeigeLoesung.getText() != null) {
+                        anzeigeLoesung.setText("");
+                    }
+                    kartenPanel.updateUI();
                 }
             }
         });
@@ -261,19 +255,33 @@ public class GUI extends JFrame {
         vokAbfrage = new JLabel("Vokabel Ausgangssprache"); //hier Verbindung zu den Vokabeln, die angezeigt werden sollen
         vokAbfrage.setFont(new Font("Dialog", 0, 20));
         kartenPanel.add(vokAbfrage);
+
+        anzeigeLoesung = new JLabel();
+        anzeigeLoesung.setFont(new Font("Dialog", 0, 20));
+        kartenPanel.add(anzeigeLoesung);
+
+        anzeigeHS = new JLabel();
+        anzeigeHS.setFont(new Font("Dialog", 0, 20));
+        kartenPanel.add(anzeigeHS);
+
         // Legt eine weiße einfache Linie als Border um das JPanel
         kartenPanel.setBorder(BorderFactory.createLineBorder(Color.white));
         return kartenPanel;
     }
 
-    public JLabel setAbfrage(String pAbfrage) {
-        kartenPanel.remove(vokAbfrage);
-        vokAbfrage = new JLabel(pAbfrage);
-        vokAbfrage.setFont(new Font("Dialog", 0, 20));
-        kartenPanel.add(vokAbfrage);
-        // Legt eine weiße einfache Linie als Border um das JPanel
-        kartenPanel.setBorder(BorderFactory.createLineBorder(Color.white));
-        return vokAbfrage;
+    public void setAbfrage(String pAbfrage) {
+        vokAbfrage.setText(pAbfrage);
+        kartenPanel.updateUI();
+    }
+
+    public void showLoesung(String pLoesung) {
+        anzeigeLoesung.setText(" - " + pLoesung);
+        kartenPanel.updateUI();
+    }
+
+    public void showHS(String pHS) {
+        anzeigeHS.setText(pHS);
+        kartenPanel.updateUI();
     }
 
     private JPanel createRichtungPanel() {
@@ -290,6 +298,9 @@ public class GUI extends JFrame {
                 fZielsprGefr = true;
                 if (aktKarte != null) {
                     setAbfrage(aktKarte.getVokA());
+                    if (anzeigeLoesung.getText() != null) {
+                        anzeigeLoesung.setText("");
+                    }
                     kartenPanel.updateUI();
                 }
             }
@@ -305,6 +316,9 @@ public class GUI extends JFrame {
                 fZielsprGefr = false;
                 if (aktKarte != null) {
                     setAbfrage(aktKarte.getVokZ());
+                    if (anzeigeLoesung.getText() != null) {//wenn noch Übersetzung vom Kreuz angezeigt, soll die weggenommen werden
+                        anzeigeLoesung.setText("");
+                    }
                     kartenPanel.updateUI();
                 }
             }
@@ -322,7 +336,7 @@ public class GUI extends JFrame {
     }
 
     private JPanel createSouthPanel(GUI pGui) {
-        JPanel southpanel = new JPanel();
+        southPanel = new JPanel();
 
         JPanel eingabepanel = new JPanel();
         //1-zeiliges und 50-spaltiges Textfeld wird         
@@ -335,7 +349,7 @@ public class GUI extends JFrame {
         //Zeilenumbrüche nur nach ganzen Wörtern
         eingabefeld.setWrapStyleWord(true);
         eingabepanel.add(eingabefeld);
-        southpanel.add(eingabepanel);
+        southPanel.add(eingabepanel);
 
         JPanel checkpanel = new JPanel();
         tick = new JButton();
@@ -361,15 +375,46 @@ public class GUI extends JFrame {
         kreuz = new JButton();
         ImageIcon ikreuz = new ImageIcon(new ImageIcon("./Kreuz.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         kreuz.setIcon(ikreuz);
+        kreuz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (aktKarte != null) {
+                    if (fZielsprGefr == true) {
+                        showLoesung(aktKarte.getVokZ());                        
+                    } else {
+                        showLoesung(aktKarte.getVokA());
+                    }
+                    weiter = new JButton("weiter");
+                        weiter.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                aktKarte.setStatus(0);
+                                eingabefeld.setText("");
+                                anzeigeLoesung.setText("");
+                                abfrageIndex++;
+                                if (abfrageIndex < aktLektion.getAnzahlVok()) {//ruft Abfrage für nächste Vokabel in der Liste auf
+                                    aktLektion.abfrage(pGui, abfrageIndex);
+                                } else {//fängt nach letzter Vokabel wieder bei erster an
+                                    abfrageIndex = 0;
+                                    aktLektion.abfrage(pGui, abfrageIndex);
+                                }
+                                southPanel.remove(weiter);
+                                southPanel.updateUI();
+                            }
+                        });
+                        southPanel.add(weiter);
+                }
+            }
+        });
         checkpanel.add(kreuz);
 
         hilfssatz = new JButton();
         ImageIcon ihilfssatz = new ImageIcon(new ImageIcon("./Message.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
         hilfssatz.setIcon(ihilfssatz);
         checkpanel.add(hilfssatz);
-        southpanel.add(checkpanel);
+        southPanel.add(checkpanel);
 
-        return southpanel;
+        return southPanel;
     }
 
     private JPanel createStatusPanel() {
@@ -406,14 +451,13 @@ public class GUI extends JFrame {
         alleLektionen = pArray;
     }
 
-    public void useTick() {
+    public void useTick() {//hier findet die eigentliche Überprüfung der Eingabe statt
         if (fZielsprGefr == true) {//gucken, in welchem Modus gerade abgefragt wird; hier muss Zielsprache eingegeben werden
             if (antwort.equals(aktKarte.getVokZ())) {//prüfen, ob Eingabe mit gespeicherter Übersetzung übereinstimmt
                 //erhöht Status der aktuell abgefragten Karteikarte um 1; da aufgrund der Überprufung in abfrage() eine Karte mit grüner Lampe gar nicht
                 //angezeigt wird, muss dieser Fall hier nicht mehr berücksichtigt werden
                 int statZ = aktKarte.getStatus() + 1;
                 aktKarte.setStatus(statZ);
-                System.out.println(aktKarte.getStatus());//raus
                 updateStatusPanel(aktKarte.getStatus());
                 updateScore();
             } else {//wenn falsche Antwort gegeben, wird Lampe auf rot gesetzt
@@ -427,10 +471,10 @@ public class GUI extends JFrame {
                 System.out.println(aktKarte.getVokA() + " - richtig");
                 int statA = aktKarte.getStatus() + 1;
                 aktKarte.setStatus(statA);
-                System.out.println(aktKarte.getStatus());//raus
                 updateStatusPanel(aktKarte.getStatus());
                 updateScore();
             } else {//wenn falsche Antwort gegeben, wird Lampe auf rot gesetzt
+                System.out.println(antwort);
                 System.out.println(aktKarte.getVokA() + " - falsch");
                 aktKarte.setStatus(0);
                 updateStatusPanel(aktKarte.getStatus());

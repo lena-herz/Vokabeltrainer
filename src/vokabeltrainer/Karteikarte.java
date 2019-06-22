@@ -78,7 +78,7 @@ public class Karteikarte {
         return hilfssatz;
     }
 
-    public void setStatus(int pWert) {//übernimmt zusätzlich Funktion von setStatus, wenn erforderlich, daher keine extra setGelernt()
+    public void setStatus(int pWert) {//übernimmt zusätzlich Funktion von setGelernt, wenn erforderlich, daher keine extra setGelernt()
         status = pWert;
         if(pWert == 3){
             gelernt = true;

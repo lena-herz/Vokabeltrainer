@@ -143,9 +143,9 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         pGui.aktKarte = aktKarte;
         if (aktKarte.getGelernt() == false) {//wenn die Lampe noch nicht grün ist, wird abgefragt
             if (pGui.fZielsprGefr == true) {
-                pGui.vokAbfrage = pGui.setAbfrage(aktKarte.getVokA());
+                pGui.setAbfrage(aktKarte.getVokA());
             } else {
-                pGui.vokAbfrage = pGui.setAbfrage(aktKarte.getVokZ());
+                pGui.setAbfrage(aktKarte.getVokZ());
             }
             pGui.kartenPanel.updateUI();
             pGui.updateStatusPanel(aktKarte.getStatus());
@@ -174,7 +174,7 @@ public class Lektion { //Problem: Lektionen verschiedener Sprachen dürfen nicht
         return vollGelernt;
     }
 
-    public void setScore(int pScore) {//brauchen wir glaube ich nicht
+    public void setScore(int pScore) {//brauchen wir glaube ich nicht, weil Score in updateScore direkt aus aktueller Liste zusammengerechnet wird
         score = pScore;
     }
 
