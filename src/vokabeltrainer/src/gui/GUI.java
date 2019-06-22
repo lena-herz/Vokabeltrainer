@@ -83,7 +83,8 @@ public class GUI extends JFrame {
         //super Konstruktor mit Fenstertitel aufrufen
         super("Digitaler Vokabeltrainer");
         //Größe und weitere Details zum JFrame angeben 
-        setSize(1000, 500);
+        //setSize(1000, 500);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(new BorderLayout()); //Layout muss festgelegt werden
         add(menuPanel = createMenuPanel(), BorderLayout.WEST); //sorgt dafür, dass das Panel auch dem Frame zugefügt wird
         add(kartenPanel = createKartenPanel(), BorderLayout.CENTER);
@@ -135,17 +136,27 @@ public class GUI extends JFrame {
 
     private JPanel createKartenPanel() {
         kartenPanel = new JPanel();
+        kartenPanel.setLayout(null);
         vokAbfrage = new JLabel("Vokabel Ausgangssprache"); //hier Verbindung zu den Vokabeln, die angezeigt werden sollen
-        vokAbfrage.setFont(new Font("Dialog", 0, 20));
+        vokAbfrage.setFont(new Font("Dialog", 0, 30));
         kartenPanel.add(vokAbfrage);
+        vokAbfrage.setOpaque(true);
+        vokAbfrage.setSize(400, 50);
+        vokAbfrage.setLocation(380, 30);
 
         anzeigeLoesung = new JLabel();
-        anzeigeLoesung.setFont(new Font("Dialog", 0, 20));
+        anzeigeLoesung.setFont(new Font("Dialog", 0, 30));
         kartenPanel.add(anzeigeLoesung);
+        anzeigeLoesung.setOpaque(true);
+        anzeigeLoesung.setSize(400, 50);
+        anzeigeLoesung.setLocation(380, 100);
 
         anzeigeHS = new JLabel();
-        anzeigeHS.setFont(new Font("Dialog", 0, 20));
+        anzeigeHS.setFont(new Font("Dialog", 0, 30));
         kartenPanel.add(anzeigeHS);
+        anzeigeHS.setOpaque(true);
+        anzeigeHS.setSize(800, 60);
+        anzeigeHS.setLocation(50, 500);
 
         // Legt eine weiße einfache Linie als Border um das JPanel
         kartenPanel.setBorder(BorderFactory.createLineBorder(Color.white));
@@ -158,7 +169,7 @@ public class GUI extends JFrame {
     }
 
     public void showLoesung(String pLoesung) {
-        anzeigeLoesung.setText(" - " + pLoesung);
+        anzeigeLoesung.setText(pLoesung);
         kartenPanel.updateUI();
     }
 
@@ -244,6 +255,9 @@ public class GUI extends JFrame {
                 antwort = eingabefeld.getText();
                 useTick();
                 eingabefeld.setText("");
+                if (anzeigeHS.getText() != null) {
+                    anzeigeHS.setText("");
+                }
                 abfrageIndex++;
                 if (abfrageIndex < aktLektion.getAnzahlVok()) {//ruft Abfrage für nächste Vokabel in der Liste auf
                     aktLektion.abfrage(pGui, abfrageIndex);
@@ -274,6 +288,9 @@ public class GUI extends JFrame {
                             aktKarte.setStatus(0);
                             eingabefeld.setText("");
                             anzeigeLoesung.setText("");
+                            if (anzeigeHS.getText() != null) {
+                                anzeigeHS.setText("");
+                            }
                             abfrageIndex++;
                             if (abfrageIndex < aktLektion.getAnzahlVok()) {//ruft Abfrage für nächste Vokabel in der Liste auf
                                 aktLektion.abfrage(pGui, abfrageIndex);
@@ -297,11 +314,11 @@ public class GUI extends JFrame {
         hilfssatz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                showHS(aktKarte.getHilfssatz());
             }
         });
         checkpanel.add(hilfssatz);
-        
+
         southPanel.add(checkpanel);
         return southPanel;
     }
