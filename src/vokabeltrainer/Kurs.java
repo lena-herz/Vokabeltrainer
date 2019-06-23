@@ -54,13 +54,12 @@ public class Kurs {
             //System.out.println(e.getMessage());
         }
 
-        Lektion neueLektion = new Lektion(pLektName, kName, gui);
+        Lektion neueLektion = new Lektion(pLektName, this, gui);
         lekListe.add(neueLektion);
         listeSpeichern();
         gui.aktLektion = neueLektion; //damit die neu eingegebenen Vokabeln auch in der neu erstellten Lektion gespeichert werden
 
         try {
-            //Reader hier, weil nur einmal benutzt wird
             kursIn = new BufferedReader(new InputStreamReader(new FileInputStream(kursFile),"UTF-8"));
         } catch (IOException e) {
             System.out.println("Fehler beim Erstellen des Kurses (FileReader).");
@@ -80,19 +79,16 @@ public class Kurs {
             //System.out.println(e.getMessage());
         }
 
-        listeSpeichern();
+        listeSpeichern(); //das gerade Eingelesene wird direkt wieder abgespeichert, weil die Datei leer ist, nachdem der Reader drübergelaufen ist
     }
 
-    //Neue Lektion wird über "lekListe.add(new Lektion())" zur lekListe hinzugefügt, beliebig oft, dann muss am Ende listeSpeichern() aufgerufen werden, 
-    //weil immer die ganze Datei überschrieben wird. Hier werden dann die Informationen von jedem Element der lekListe in die Datei geschrieben. Bei 
-    //Programmaufruf muss dann die Datei wieder in die lekListe eingelesen werden, damit alle Elemente wieder vorhanden sind und beim nächsten Speichern 
-    //wieder mitgeschrieben werden.
-    private void listeSpeichern() {
+    //überschreibt vorhandene Datei mit allen Elementen, die zum Zeitpunkt des Aufrufs in der lekListe sind
+    public void listeSpeichern() { //public, damit aus Lektion heraus gespeichert werden kann, wenn eine Lektion auf vollGelernt gesetzt wird
         try {
             //Writer hier, damit bei jedem Speichern ein neuer Stream geöffnet wird; gibt sonst Probleme mit dem close()
             kursOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(kursFile),"UTF-8"));
             for (Lektion lek : lekListe) {
-                kursOut.write(lek.getName() + ";" + lek.getVollGelernt() + ";" + lek.getMeinKurs() + ";" + "Vokabellisten\\" + lek.getMeinKurs() + "_" + lek.getName() + ".csv" + ";");
+                kursOut.write(lek.getName() + ";" + lek.getVollGelernt() + ";" + "Vokabellisten\\" + lek.getMeinKurs().getName() + "_" + lek.getName() + ".csv" + ";");
                 kursOut.newLine();
             }
             kursOut.write("endOfList");
@@ -108,16 +104,16 @@ public class Kurs {
             String zeile = kursIn.readLine();
             if (zeile != null) {
                 while (!zeile.equals("endOfList")) {
-
                     String[] split = zeile.split(";"); //teilt am ";"
 
                     //Parameter typecasten zu dem, was sie im Konstruktor sein müssen:
                     String pName = split[0];
                     boolean pVollGel = Boolean.parseBoolean(split[1]);
-                    String pMeinKurs = split[2];
-                    String pFile = split[3];
+                    Kurs pMeinKurs = this;
+                    String pFile = split[2];
 
-                    lekListe.add(new Lektion(pName, pVollGel, pMeinKurs, pFile, gui));//fügt abgespeicherte Kurse wieder zur kursListe hinzu mit den in "split" gespeicherten Informationen
+                    //fügt abgespeicherte Kurse wieder zur kursListe hinzu mit den in "split" gespeicherten Informationen
+                    lekListe.add(new Lektion(pName, pVollGel, pMeinKurs, pFile, gui));
                     zeile = kursIn.readLine();
                 }
             }
@@ -126,20 +122,10 @@ public class Kurs {
             //System.out.println(e.getMessage());
         }
     }
-    
-    public Object[] lekAuflisten(Lektion[] pArray, int pIndex){
-        Object[] indexUndArray = new Object[2];
-        int index = pIndex;
-        for (Lektion lektion : lekListe) {
-            pArray[index] = lektion;
-            index++;
-        }
-        return indexUndArray;//gibt zurück, bei welcher Zahl die Auflistung jetzt angekommen ist
-    }
 
-    //brauchten wir mal, jetzt nicht mehr, lassen wir aber erstmal drin
+    //diese Methode kann von der GUI aus aufgerufen werden, wenn eine neue Lektion erstellt wird
     public void addLektion(String pLektName) {
-        Lektion neueLekt = new Lektion(pLektName, kName, gui);
+        Lektion neueLekt = new Lektion(pLektName, this, gui);
         lekListe.add(neueLekt);
         listeSpeichern();
         gui.aktLektion = neueLekt;
@@ -157,7 +143,7 @@ public class Kurs {
         return kursFile;
     }
     
-    public int getAnzahlLek(){//kann glaub ich raus
+    public int getAnzahlLek(){
         return lekListe.size();
     }
 

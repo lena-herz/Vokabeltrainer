@@ -41,7 +41,6 @@ public class Vokabeltrainer {
             trainIn = new BufferedReader(new InputStreamReader(new FileInputStream("Kursliste.csv"),"UTF-8"));
             listeEinlesen(gui); //liest alle Kurse ein, die lesen ihre Lektion ein und die wiederum ihre Vokabeln
 
-            trainOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Kursliste.csv"),"UTF-8"));
             listeSpeichern(); //das gerade Eingelesene wird direkt wieder abgespeichert, weil die Datei leer ist, nachdem der Reader drübergelaufen ist
             
             gui.setAlleKurse(kursListe);

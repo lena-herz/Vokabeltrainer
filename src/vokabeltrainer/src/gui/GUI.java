@@ -301,7 +301,7 @@ public class GUI extends JFrame {
     
     //damit aus dem Konstruktor für neue Lektionen heraus ein Button hinzugefügt werden kann
     public void lektButtonErstellen(Lektion pLektion, GUI pGui){
-        JButton lektButton = new JButton(pLektion.getMeinKurs() + " - " + pLektion.getName());
+        JButton lektButton = new JButton(pLektion.getMeinKurs().getName() + " - " + pLektion.getName());
             lektButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -614,10 +614,34 @@ public class GUI extends JFrame {
         int anzRest = fullScore - anzGelernt;
         scorelabel.setText("Score: " + anzGelernt + "/" + fullScore + " - noch:" + anzRest);
         richtungPanel.updateUI();
+        
+        if(anzRest==0){
+            aktLektion.setVollGelernt();
+            showGelerntScreen();
+        }
     }
 
     public void setAlleKurse(ArrayList<Kurs> pKurse) {
         alleKurse = pKurse;
+    }
+    
+    public void showGelerntScreen(){
+        kartenPanel.removeAll();
+        
+        JLabel bildGelerntScreen = new JLabel(new ImageIcon("./Sterne.png"));
+        bildGelerntScreen.setOpaque(true);
+        bildGelerntScreen.setSize(500, 400);
+        bildGelerntScreen.setLocation(200, 80);
+        kartenPanel.add(bildGelerntScreen);
+        
+        JLabel schriftGelerntScreen = new JLabel("Diese Lektion hast du vollständig gelernt. Herzlichen Glückwunsch!");
+        schriftGelerntScreen.setFont(new Font("Dialog", 0, 25));
+        schriftGelerntScreen.setSize(800, 200);
+        schriftGelerntScreen.setLocation(10, 500);
+        kartenPanel.add(schriftGelerntScreen);
+        
+        kartenPanel.updateUI();
+        updateStatusPanel(3);
     }
 
 }

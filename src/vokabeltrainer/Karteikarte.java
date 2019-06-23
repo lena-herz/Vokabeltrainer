@@ -20,16 +20,19 @@ public class Karteikarte {
     private Lektion meineLektion;
 
 
-    public Karteikarte(Lektion pMeineLektion, String pVokA, String pVokZ, String pHS) {
+    public Karteikarte(Lektion pMeineLektion, String pVokA, String pVokZ, String pHS) { //Konstruktor für wenn neue Karteiakarten erstellt werden
         vokA = pVokA;
         vokZ = pVokZ;
-        hilfssatz = pHS;               
+        hilfssatz = pHS; 
+        meineLektion = pMeineLektion;
+        
+        //sind eigentlich Standardwerte, aber zur Sicherheit:
         gelernt = false;
         status = 0;
         favorit = false;
-        meineLektion = pMeineLektion;
     }
     
+    //Konstruktor für wenn Vokabeln eingelesen werden
     public Karteikarte(String pVokA, String pVokZ, String pHS, boolean pGel, int pStatus, boolean pFav, Lektion pMeineLektion){
         vokA = pVokA;
         vokZ = pVokZ;
