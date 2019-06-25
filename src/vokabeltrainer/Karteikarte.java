@@ -11,20 +11,20 @@ package vokabeltrainer;
  */
 public class Karteikarte {
 
-    private String vokA;
-    private String vokZ;
-    private String hilfssatz;
+    private final String VOKA;
+    private final String VOKZ;
+    private final String HILFSSATZ;
     private boolean gelernt;
     private int status; //status von 0-3 für die vier Lampen, 0 entspricht der roten Lampe, ab da aufsteigend
     private boolean favorit; //aus Zeitmangel nicht geschafft, wäre aber prinzipiell möglich, das Programm durch eine Favoritenliste zu erweitern
-    private Lektion meineLektion;
+    private final Lektion MEINELEKTION;
 
 
     public Karteikarte(Lektion pMeineLektion, String pVokA, String pVokZ, String pHS) { //Konstruktor für wenn neue Karteiakarten erstellt werden
-        vokA = pVokA;
-        vokZ = pVokZ;
-        hilfssatz = pHS; 
-        meineLektion = pMeineLektion;
+        VOKA = pVokA;
+        VOKZ = pVokZ;
+        HILFSSATZ = pHS; 
+        MEINELEKTION = pMeineLektion;
         
         //sind eigentlich Standardwerte, aber zur Sicherheit:
         gelernt = false;
@@ -34,25 +34,25 @@ public class Karteikarte {
     
     //Konstruktor für wenn Vokabeln eingelesen werden
     public Karteikarte(String pVokA, String pVokZ, String pHS, boolean pGel, int pStatus, boolean pFav, Lektion pMeineLektion){
-        vokA = pVokA;
-        vokZ = pVokZ;
-        hilfssatz = pHS;
+        VOKA = pVokA;
+        VOKZ = pVokZ;
+        HILFSSATZ = pHS;
         gelernt = pGel;
         status = pStatus;
         favorit = pFav;
-        meineLektion = pMeineLektion;
+        MEINELEKTION = pMeineLektion;
     }
 
     public String getVokA() {
-        return vokA;
+        return VOKA;
     }
 
     public String getVokZ() {
-        return vokZ;
+        return VOKZ;
     }
 
     public String getHilfssatz() {
-        return hilfssatz;
+        return HILFSSATZ;
     }
 
     public void setStatus(int pWert) {//übernimmt zusätzlich Funktion von setGelernt, wenn erforderlich, daher keine extra setGelernt()
@@ -60,7 +60,7 @@ public class Karteikarte {
         if(pWert == 3){
             gelernt = true;
         }
-        meineLektion.listeSpeichern(); //damit Status der Lampe beim nächsten Programmstart wieder übernommen wird
+        MEINELEKTION.listeSpeichern(); //damit Status der Lampe beim nächsten Programmstart wieder übernommen wird
     }
 
     public int getStatus() {
@@ -73,7 +73,7 @@ public class Karteikarte {
 
     public void setFavorit(boolean pFavorit) { //nicht verwendet, provisorisch angelegt
         favorit = pFavorit;
-        meineLektion.listeSpeichern();
+        MEINELEKTION.listeSpeichern();
     }
 
     public boolean getFavorit() {
@@ -81,7 +81,7 @@ public class Karteikarte {
     }
     
     public Lektion getMeineLektion(){
-        return meineLektion;
+        return MEINELEKTION;
     }
 
 }
