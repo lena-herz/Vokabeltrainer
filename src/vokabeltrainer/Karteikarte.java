@@ -16,7 +16,7 @@ public class Karteikarte {
     private String hilfssatz;
     private boolean gelernt;
     private int status; //status von 0-3 für die vier Lampen, 0 entspricht der roten Lampe, ab da aufsteigend
-    private boolean favorit;
+    private boolean favorit; //aus Zeitmangel nicht geschafft, wäre aber prinzipiell möglich, das Programm durch eine Favoritenliste zu erweitern
     private Lektion meineLektion;
 
 
@@ -71,7 +71,7 @@ public class Karteikarte {
         return gelernt;
     }
 
-    public void setFavorit(boolean pFavorit) {
+    public void setFavorit(boolean pFavorit) { //nicht verwendet, provisorisch angelegt
         favorit = pFavorit;
         meineLektion.listeSpeichern();
     }

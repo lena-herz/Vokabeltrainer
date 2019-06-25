@@ -38,6 +38,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
@@ -296,6 +298,7 @@ public class GUI extends JFrame {
         for (Lektion lektion : pAlleLektionen) {
             lektButtonErstellen(lektion, pGui);
         }
+        menuPanel.updateUI(); 
         return menuPanel;
     }
     
@@ -548,15 +551,7 @@ public class GUI extends JFrame {
                 //angezeigt wird, muss dieser Fall hier nicht mehr berücksichtigt werden
                 int statZ = aktKarte.getStatus() + 1;
                 aktKarte.setStatus(statZ);
-                
-                //ich hätte gerne, dass man das Umspringen der Lampe noch sieht, bevor die nächste Vokabel angezeigt wird
-                new java.util.Timer().schedule(new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        updateStatusPanel(aktKarte.getStatus());
-                    }
-                }, 10000);
-                
+                updateStatusPanel(aktKarte.getStatus());                               
                 updateScore(); //falls in diesem Schritt eine Vokabel auf grün gesetzt wird, muss der Score mitzählen
             } else { //wenn falsche Antwort gegeben, wird Lampe komplett zurück auf rot gesetzt
                 aktKarte.setStatus(0);
@@ -567,7 +562,7 @@ public class GUI extends JFrame {
                 //s. oben
                 int statA = aktKarte.getStatus() + 1;
                 aktKarte.setStatus(statA);
-                updateStatusPanel(aktKarte.getStatus());
+                updateStatusPanel(aktKarte.getStatus());                
                 updateScore();
             } else { //wenn falsche Antwort gegeben, wird Lampe auf rot gesetzt
                 aktKarte.setStatus(0);

@@ -55,19 +55,12 @@ public class Lektion {
         //werden, die zu dieser Lektion gehören 
         lektFile = new File("Vokabellisten\\" + meinKurs.getName() + "_" + lName + ".csv");
 
-        try {
-            //übergibt dem Writer jetzt die Datei, auf die er schreiben soll
-            lektOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(lektFile), "UTF-8"));
-        } catch (IOException e) {
-            System.out.println("Fehler beim Erstellen der Lektion.");
-            //System.out.println(e.getMessage());
-        }
-        listeSpeichern(); //das gerade Eingelesene wird direkt wieder abgespeichert, weil die Datei leer ist, nachdem der Reader drübergelaufen ist
+        listeSpeichern(); //damit die Datei tatsächlich angelegt wird; enthält erstellen des Writers
 
         try {
             lektIn = new BufferedReader(new InputStreamReader(new FileInputStream(lektFile), "UTF-8"));
         } catch (IOException e) {
-            System.out.println("Fehler beim Erstellen der Lektion.");
+            System.out.println("Fehler beim Erstellen der Lektion (FileReader).");
             //System.out.println(e.getMessage());
         }
     }
@@ -83,7 +76,7 @@ public class Lektion {
             lektIn = new BufferedReader(new InputStreamReader(new FileInputStream(lektFile), "UTF-8"));
             listeEinlesen();
         } catch (IOException e) {
-            System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileReader).");
+            System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileReader). - " + lName);
             //System.out.println(e.getMessage());
         }
 
@@ -101,7 +94,7 @@ public class Lektion {
             lektOut.write("endOfList");
             lektOut.close();
         } catch (IOException e) {
-            System.out.println("Fehler beim Speichern der Vokabelliste.");
+            System.out.println("Fehler beim Speichern der Vokabelliste. - " + lName);
             //System.out.println(e.getMessage());
         }
     }
@@ -126,7 +119,7 @@ public class Lektion {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Fehler beim Einlesen der Vokabelliste.");
+            System.out.println("Fehler beim Einlesen der Vokabelliste. - " + lName);
             //System.out.println(e.getMessage());
         }
     }
@@ -142,7 +135,7 @@ public class Lektion {
                     pGui.setAbfrage(aktKarte.getVokZ());
                 }
                 pGui.kartenPanel.updateUI();
-                pGui.updateStatusPanel(aktKarte.getStatus());
+                pGui.updateStatusPanel(aktKarte.getStatus()); //beinhaltet .updatUI()
             } else {//wenn Lampe schon grün, wird die nächste Karteikarte der Liste aufgerufen
                 abfrage(pGui, (pIndex + 1));
             }
@@ -152,7 +145,7 @@ public class Lektion {
 
     }
 
-    public Karteikarte getVokAt(int pIndex) {
+    public Karteikarte getVokAt(int pIndex) { //für Zugriff von außen
         return vokListe.get(pIndex);
     }
 

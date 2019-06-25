@@ -44,8 +44,7 @@ public class Vokabeltrainer {
             listeSpeichern(); //das gerade Eingelesene wird direkt wieder abgespeichert, weil die Datei leer ist, nachdem der Reader drübergelaufen ist
             
             gui.setAlleKurse(kursListe);
-            gui.menuPanel = gui.updateMenuPanel(gui, alleLektionen());
-            gui.menuPanel.updateUI();            
+            gui.menuPanel = gui.updateMenuPanel(gui, alleLektionen()); //beinhaltet .updateUI()                       
             
         } catch (IOException e) { //hier fangen wir Fehler auf, die ganz zum Schluss noch übrig sind und sonst nirgendwo behandelt werden
             System.out.println("Upsi. Irgendwo ist ein Input/Output schief gelaufen, aber ich weiß nicht genau wo. Sorry... ");
