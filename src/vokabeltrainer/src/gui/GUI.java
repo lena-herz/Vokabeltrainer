@@ -13,17 +13,35 @@ import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Event;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.util.EventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.URL;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
 import vokabeltrainer.Karteikarte;
 import vokabeltrainer.Kurs;
 import vokabeltrainer.Lektion;
@@ -278,7 +296,6 @@ public class GUI extends JFrame {
         for (Lektion lektion : pAlleLektionen) {
             lektButtonErstellen(lektion, pGui);
         }
-        menuPanel.updateUI(); 
         return menuPanel;
     }
     
@@ -295,6 +312,9 @@ public class GUI extends JFrame {
                     updateScore();
                     aktLektion.abfrage(pGui, abfrageIndex);
                     eingabefeld.setText("");
+                    if (anzeigeLoesung.getText() != null) {
+                        anzeigeLoesung.setText("");
+                    }
                     kartenPanel.updateUI();
                 }
             });
@@ -528,7 +548,15 @@ public class GUI extends JFrame {
                 //angezeigt wird, muss dieser Fall hier nicht mehr berücksichtigt werden
                 int statZ = aktKarte.getStatus() + 1;
                 aktKarte.setStatus(statZ);
-                updateStatusPanel(aktKarte.getStatus());                               
+                
+                //ich hätte gerne, dass man das Umspringen der Lampe noch sieht, bevor die nächste Vokabel angezeigt wird
+                new java.util.Timer().schedule(new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        updateStatusPanel(aktKarte.getStatus());
+                    }
+                }, 10000);
+                
                 updateScore(); //falls in diesem Schritt eine Vokabel auf grün gesetzt wird, muss der Score mitzählen
             } else { //wenn falsche Antwort gegeben, wird Lampe komplett zurück auf rot gesetzt
                 aktKarte.setStatus(0);
@@ -539,7 +567,7 @@ public class GUI extends JFrame {
                 //s. oben
                 int statA = aktKarte.getStatus() + 1;
                 aktKarte.setStatus(statA);
-                updateStatusPanel(aktKarte.getStatus());                
+                updateStatusPanel(aktKarte.getStatus());
                 updateScore();
             } else { //wenn falsche Antwort gegeben, wird Lampe auf rot gesetzt
                 aktKarte.setStatus(0);

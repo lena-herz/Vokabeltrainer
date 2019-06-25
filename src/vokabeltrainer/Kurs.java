@@ -7,13 +7,18 @@ package vokabeltrainer;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.*;
 import vokabeltrainer.src.gui.GUI;
 
 /**
@@ -22,7 +27,7 @@ import vokabeltrainer.src.gui.GUI;
  */
 public class Kurs {
 
-    private final String KNAME;
+    private final String kName;
     private ArrayList<Lektion> lekListe = new ArrayList<>();
     private File kursFile;
     private GUI gui;
@@ -35,35 +40,42 @@ public class Kurs {
 
     //Konstruktor für wenn ein Kurs neu erstellt wird, also wenn bei einer neuen Lektion ein Kursname eingegeben wird, der noch nicht existiert
     public Kurs(String pName, GUI pGui, String pLektName) {
-        KNAME = pName;
+        kName = pName;
         gui = pGui;
 
         //erstellt im Ordner "Kurslisten" eine csv-Datei, die nach dem Kursnamen benannt ist und in der die Namen aller Lektionen gespeichert werden,
         //die zu diesem Kurs gehören
-        kursFile = new File("Lektionslisten\\" + KNAME + ".csv");
+        kursFile = new File("Lektionslisten\\" + kName + ".csv");
+
+        try {
+            kursOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(kursFile),"UTF-8"));
+        } catch (IOException e) {
+            System.out.println("Fehler beim Erstellen des Kurses (FileWriter).");
+            //System.out.println(e.getMessage());
+        }
 
         Lektion neueLektion = new Lektion(pLektName, this, gui);
         lekListe.add(neueLektion);
-        listeSpeichern(); //beinhaltet Erstellen des Writers
+        listeSpeichern();
         gui.aktLektion = neueLektion; //damit die neu eingegebenen Vokabeln auch in der neu erstellten Lektion gespeichert werden
 
         try {
             kursIn = new BufferedReader(new InputStreamReader(new FileInputStream(kursFile),"UTF-8"));
         } catch (IOException e) {
-            System.out.println("Fehler beim Erstellen des Kurses (FileReader)." + KNAME);
+            System.out.println("Fehler beim Erstellen des Kurses (FileReader).");
             //System.out.println(e.getMessage());
         }
     }
 
     public Kurs(String pName, String pFile, GUI pGui) { //Konstruktor für wenn die gespeicherten Kurse eingelesen werden
         gui = pGui;
-        KNAME = pName;
+        kName = pName;
         kursFile = new File(pFile);
         try {
             kursIn = new BufferedReader(new InputStreamReader(new FileInputStream(kursFile),"UTF-8"));
             listeEinlesen();
         } catch (IOException e) {
-            System.out.println("Fehler beim Einlesen der Lektionsliste (FileReader). - " + KNAME);
+            System.out.println("Fehler beim Einlesen der Lektionsliste (FileReader).");
             //System.out.println(e.getMessage());
         }
 
@@ -82,7 +94,7 @@ public class Kurs {
             kursOut.write("endOfList");
             kursOut.close();
         } catch (IOException e) {
-            System.out.println("Fehler beim Speichern der Lektionsliste.- " + KNAME);
+            System.out.println("Fehler beim Speichern der Lektionsliste.");
             //System.out.println(e.getMessage());
         }
     }
@@ -106,7 +118,7 @@ public class Kurs {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Fehler beim Einlesen der Lektionsliste.- " + KNAME);
+            System.out.println("Fehler beim Einlesen der Lektionsliste.");
             //System.out.println(e.getMessage());
         }
     }
@@ -124,7 +136,7 @@ public class Kurs {
     }
 
     public String getName() {
-        return KNAME;
+        return kName;
     }
 
     public File getFile() {

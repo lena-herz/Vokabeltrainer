@@ -5,13 +5,19 @@
  */
 package vokabeltrainer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.*;
 import java.util.ArrayList;
 import vokabeltrainer.src.gui.GUI;
 
@@ -38,7 +44,8 @@ public class Vokabeltrainer {
             listeSpeichern(); //das gerade Eingelesene wird direkt wieder abgespeichert, weil die Datei leer ist, nachdem der Reader drübergelaufen ist
             
             gui.setAlleKurse(kursListe);
-            gui.menuPanel = gui.updateMenuPanel(gui, alleLektionen()); //beinhaltet .updateUI()                       
+            gui.menuPanel = gui.updateMenuPanel(gui, alleLektionen());
+            gui.menuPanel.updateUI();            
             
         } catch (IOException e) { //hier fangen wir Fehler auf, die ganz zum Schluss noch übrig sind und sonst nirgendwo behandelt werden
             System.out.println("Upsi. Irgendwo ist ein Input/Output schief gelaufen, aber ich weiß nicht genau wo. Sorry... ");

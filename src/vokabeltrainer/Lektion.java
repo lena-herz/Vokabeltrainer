@@ -7,13 +7,20 @@ package vokabeltrainer;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import vokabeltrainer.src.gui.GUI;
 
 /**
@@ -22,7 +29,7 @@ import vokabeltrainer.src.gui.GUI;
  */
 public class Lektion {
 
-    private final String LNAME;
+    private final String lName;
     private boolean vollGelernt;
     private Karteikarte aktKarte;
     private ArrayList<Karteikarte> vokListe = new ArrayList<>();
@@ -36,7 +43,7 @@ public class Lektion {
     private BufferedReader lektIn;
 
     public Lektion(String pName, Kurs pMeinKurs, GUI pGui) { //Konstruktor für wenn eine Lektion neu erstellt wird
-        LNAME = pName;
+        lName = pName;
         meinKurs = pMeinKurs;
         gui = pGui;
 
@@ -46,21 +53,28 @@ public class Lektion {
 
         //erstellt im Ordner "Vokabellisten" eine csv-Datei, die nach dem Lektionsnamen benannt wird und in der die Inhalte aller Karteikarten gespeichert  
         //werden, die zu dieser Lektion gehören 
-        lektFile = new File("Vokabellisten\\" + meinKurs.getName() + "_" + LNAME + ".csv");
+        lektFile = new File("Vokabellisten\\" + meinKurs.getName() + "_" + lName + ".csv");
 
-        listeSpeichern(); //damit die Datei tatsächlich angelegt wird; enthält erstellen des Writers
+        try {
+            //übergibt dem Writer jetzt die Datei, auf die er schreiben soll
+            lektOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(lektFile), "UTF-8"));
+        } catch (IOException e) {
+            System.out.println("Fehler beim Erstellen der Lektion.");
+            //System.out.println(e.getMessage());
+        }
+        listeSpeichern(); //das gerade Eingelesene wird direkt wieder abgespeichert, weil die Datei leer ist, nachdem der Reader drübergelaufen ist
 
         try {
             lektIn = new BufferedReader(new InputStreamReader(new FileInputStream(lektFile), "UTF-8"));
         } catch (IOException e) {
-            System.out.println("Fehler beim Erstellen der Lektion (FileReader).");
+            System.out.println("Fehler beim Erstellen der Lektion.");
             //System.out.println(e.getMessage());
         }
     }
 
     //Konstruktor für wenn die gespeicherten Lektionen eingelesen werden
     public Lektion(String pName, boolean pVollGel, Kurs pMeinKurs, String pFile, GUI pGui) {
-        LNAME = pName;
+        lName = pName;
         vollGelernt = pVollGel;
         meinKurs = pMeinKurs;
         lektFile = new File(pFile);
@@ -69,7 +83,7 @@ public class Lektion {
             lektIn = new BufferedReader(new InputStreamReader(new FileInputStream(lektFile), "UTF-8"));
             listeEinlesen();
         } catch (IOException e) {
-            System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileReader). - " + LNAME);
+            System.out.println("Fehler beim Einlesen der gespeicherten Vokabeln (FileReader).");
             //System.out.println(e.getMessage());
         }
 
@@ -87,7 +101,7 @@ public class Lektion {
             lektOut.write("endOfList");
             lektOut.close();
         } catch (IOException e) {
-            System.out.println("Fehler beim Speichern der Vokabelliste. - " + LNAME);
+            System.out.println("Fehler beim Speichern der Vokabelliste.");
             //System.out.println(e.getMessage());
         }
     }
@@ -112,7 +126,7 @@ public class Lektion {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Fehler beim Einlesen der Vokabelliste. - " + LNAME);
+            System.out.println("Fehler beim Einlesen der Vokabelliste.");
             //System.out.println(e.getMessage());
         }
     }
@@ -128,7 +142,7 @@ public class Lektion {
                     pGui.setAbfrage(aktKarte.getVokZ());
                 }
                 pGui.kartenPanel.updateUI();
-                pGui.updateStatusPanel(aktKarte.getStatus()); //beinhaltet .updatUI()
+                pGui.updateStatusPanel(aktKarte.getStatus());
             } else {//wenn Lampe schon grün, wird die nächste Karteikarte der Liste aufgerufen
                 abfrage(pGui, (pIndex + 1));
             }
@@ -138,12 +152,12 @@ public class Lektion {
 
     }
 
-    public Karteikarte getVokAt(int pIndex) { //für Zugriff von außen
+    public Karteikarte getVokAt(int pIndex) {
         return vokListe.get(pIndex);
     }
 
     public String getName() {
-        return LNAME;
+        return lName;
     }
 
     public File getFile() {
